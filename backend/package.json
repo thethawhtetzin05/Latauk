@@ -1,24 +1,20 @@
 {
-  "name": "backend",
+  "name": "latauk-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20260301.1",
-    "@google/generative-ai": "^0.24.1",
-    "drizzle-orm": "^0.45.1",
-    "hono": "^4.12.5"
+    "@cloudflare/workers-types": "^4.20240222.0",
+    "@google/generative-ai": "^0.2.1",
+    "drizzle-orm": "^0.29.3",
+    "hono": "^4.0.0",
+    "openai": "^4.28.0"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.31.9",
-    "typescript": "^5.9.3",
-    "wrangler": "^4.70.0"
+    "drizzle-kit": "^0.20.14",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.30.1"
   }
 }
