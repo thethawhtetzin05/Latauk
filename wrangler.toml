@@ -1,0 +1,18 @@
+# This is the root wrangler.toml for the monorepo.
+# It tells Cloudflare where to find the actual worker project.
+
+name = "latauk-backend"
+main = "backend/src/index.ts" # Worker entrypoint
+compatibility_date = "2024-03-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "latauk-db"
+database_id = "4148d09c-497c-407d-91e7-17e05823c960"
+
+[[vectorize]]
+binding = "VECTOR_INDEX"
+index_name = "latauk-style-index"
+
+[build]
+command = "pnpm --filter backend install" # Instruct Cloudflare to build inside the backend folder
