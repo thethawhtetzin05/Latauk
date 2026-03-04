@@ -5,7 +5,7 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 
-// .wrangler/tmp/bundle-jYqMBb/checked-fetch.js
+// .wrangler/tmp/bundle-HXio1x/checked-fetch.js
 var urls = /* @__PURE__ */ new Set();
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
@@ -2123,7 +2123,7 @@ var Hono2 = class extends Hono {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/entity.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/entity.js
 var entityKind = /* @__PURE__ */ Symbol.for("drizzle:entityKind");
 function is(value, type) {
   if (!value || typeof value !== "object") {
@@ -2137,7 +2137,7 @@ function is(value, type) {
       `Class "${type.name ?? "<unknown>"}" doesn't look like a Drizzle entity. If this is incorrect and the class is provided by Drizzle, please report this as a bug.`
     );
   }
-  let cls = Object.getPrototypeOf(value).constructor;
+  let cls = value.constructor;
   if (cls) {
     while (cls) {
       if (entityKind in cls && cls[entityKind] === type[entityKind]) {
@@ -2150,7 +2150,7 @@ function is(value, type) {
 }
 __name(is, "is");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/logger.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/logger.js
 var ConsoleLogWriter = class {
   static {
     __name(this, "ConsoleLogWriter");
@@ -2190,13 +2190,10 @@ var NoopLogger = class {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/table.utils.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/table.js
 var TableName = /* @__PURE__ */ Symbol.for("drizzle:Name");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/table.js
 var Schema = /* @__PURE__ */ Symbol.for("drizzle:Schema");
 var Columns = /* @__PURE__ */ Symbol.for("drizzle:Columns");
-var ExtraConfigColumns = /* @__PURE__ */ Symbol.for("drizzle:ExtraConfigColumns");
 var OriginalName = /* @__PURE__ */ Symbol.for("drizzle:OriginalName");
 var BaseName = /* @__PURE__ */ Symbol.for("drizzle:BaseName");
 var IsAlias = /* @__PURE__ */ Symbol.for("drizzle:IsAlias");
@@ -2213,7 +2210,6 @@ var Table = class {
     Schema,
     OriginalName,
     Columns,
-    ExtraConfigColumns,
     BaseName,
     IsAlias,
     ExtraConfigBuilder
@@ -2232,8 +2228,6 @@ var Table = class {
   [Schema];
   /** @internal */
   [Columns];
-  /** @internal */
-  [ExtraConfigColumns];
   /**
    *  @internal
    * Used to store the table name before the transformation via the `tableCreator` functions.
@@ -2242,25 +2236,24 @@ var Table = class {
   /** @internal */
   [IsAlias] = false;
   /** @internal */
-  [IsDrizzleTable] = true;
-  /** @internal */
   [ExtraConfigBuilder] = void 0;
+  [IsDrizzleTable] = true;
   constructor(name, schema, baseName) {
     this[TableName] = this[OriginalName] = name;
     this[Schema] = schema;
     this[BaseName] = baseName;
   }
 };
+function isTable(table) {
+  return typeof table === "object" && table !== null && IsDrizzleTable in table;
+}
+__name(isTable, "isTable");
 function getTableName(table) {
   return table[TableName];
 }
 __name(getTableName, "getTableName");
-function getTableUniqueName(table) {
-  return `${table[Schema] ?? "public"}.${table[TableName]}`;
-}
-__name(getTableUniqueName, "getTableUniqueName");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/column.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/column.js
 var Column = class {
   static {
     __name(this, "Column");
@@ -2269,11 +2262,9 @@ var Column = class {
     this.table = table;
     this.config = config;
     this.name = config.name;
-    this.keyAsName = config.keyAsName;
     this.notNull = config.notNull;
     this.default = config.default;
     this.defaultFn = config.defaultFn;
-    this.onUpdateFn = config.onUpdateFn;
     this.hasDefault = config.hasDefault;
     this.primary = config.primaryKey;
     this.isUnique = config.isUnique;
@@ -2281,17 +2272,13 @@ var Column = class {
     this.uniqueType = config.uniqueType;
     this.dataType = config.dataType;
     this.columnType = config.columnType;
-    this.generated = config.generated;
-    this.generatedIdentity = config.generatedIdentity;
   }
   static [entityKind] = "Column";
   name;
-  keyAsName;
   primary;
   notNull;
   default;
   defaultFn;
-  onUpdateFn;
   hasDefault;
   isUnique;
   uniqueName;
@@ -2299,8 +2286,6 @@ var Column = class {
   dataType;
   columnType;
   enumValues = void 0;
-  generated = void 0;
-  generatedIdentity = void 0;
   config;
   mapFromDriverValue(value) {
     return value;
@@ -2308,614 +2293,76 @@ var Column = class {
   mapToDriverValue(value) {
     return value;
   }
-  // ** @internal */
-  shouldDisableInsert() {
-    return this.config.generated !== void 0 && this.config.generated.type !== "byDefault";
-  }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/column-builder.js
-var ColumnBuilder = class {
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/pg-core/table.js
+var InlineForeignKeys = /* @__PURE__ */ Symbol.for("drizzle:PgInlineForeignKeys");
+var PgTable = class extends Table {
   static {
-    __name(this, "ColumnBuilder");
+    __name(this, "PgTable");
   }
-  static [entityKind] = "ColumnBuilder";
-  config;
-  constructor(name, dataType, columnType) {
-    this.config = {
-      name,
-      keyAsName: name === "",
-      notNull: false,
-      default: void 0,
-      hasDefault: false,
-      primaryKey: false,
-      isUnique: false,
-      uniqueName: void 0,
-      uniqueType: void 0,
-      dataType,
-      columnType,
-      generated: void 0
-    };
-  }
-  /**
-   * Changes the data type of the column. Commonly used with `json` columns. Also, useful for branded types.
-   *
-   * @example
-   * ```ts
-   * const users = pgTable('users', {
-   * 	id: integer('id').$type<UserId>().primaryKey(),
-   * 	details: json('details').$type<UserDetails>().notNull(),
-   * });
-   * ```
-   */
-  $type() {
-    return this;
-  }
-  /**
-   * Adds a `not null` clause to the column definition.
-   *
-   * Affects the `select` model of the table - columns *without* `not null` will be nullable on select.
-   */
-  notNull() {
-    this.config.notNull = true;
-    return this;
-  }
-  /**
-   * Adds a `default <value>` clause to the column definition.
-   *
-   * Affects the `insert` model of the table - columns *with* `default` are optional on insert.
-   *
-   * If you need to set a dynamic default value, use {@link $defaultFn} instead.
-   */
-  default(value) {
-    this.config.default = value;
-    this.config.hasDefault = true;
-    return this;
-  }
-  /**
-   * Adds a dynamic default value to the column.
-   * The function will be called when the row is inserted, and the returned value will be used as the column value.
-   *
-   * **Note:** This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`.
-   */
-  $defaultFn(fn) {
-    this.config.defaultFn = fn;
-    this.config.hasDefault = true;
-    return this;
-  }
-  /**
-   * Alias for {@link $defaultFn}.
-   */
-  $default = this.$defaultFn;
-  /**
-   * Adds a dynamic update value to the column.
-   * The function will be called when the row is updated, and the returned value will be used as the column value if none is provided.
-   * If no `default` (or `$defaultFn`) value is provided, the function will be called when the row is inserted as well, and the returned value will be used as the column value.
-   *
-   * **Note:** This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`.
-   */
-  $onUpdateFn(fn) {
-    this.config.onUpdateFn = fn;
-    this.config.hasDefault = true;
-    return this;
-  }
-  /**
-   * Alias for {@link $onUpdateFn}.
-   */
-  $onUpdate = this.$onUpdateFn;
-  /**
-   * Adds a `primary key` clause to the column definition. This implicitly makes the column `not null`.
-   *
-   * In SQLite, `integer primary key` implicitly makes the column auto-incrementing.
-   */
-  primaryKey() {
-    this.config.primaryKey = true;
-    this.config.notNull = true;
-    return this;
-  }
-  /** @internal Sets the name of the column to the key within the table definition if a name was not given. */
-  setName(name) {
-    if (this.config.name !== "") return;
-    this.config.name = name;
-  }
+  static [entityKind] = "PgTable";
+  /** @internal */
+  static Symbol = Object.assign({}, Table.Symbol, {
+    InlineForeignKeys
+  });
+  /**@internal */
+  [InlineForeignKeys] = [];
+  /** @internal */
+  [Table.Symbol.ExtraConfigBuilder] = void 0;
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/pg-core/foreign-keys.js
-var ForeignKeyBuilder = class {
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/pg-core/primary-keys.js
+var PrimaryKeyBuilder = class {
   static {
-    __name(this, "ForeignKeyBuilder");
+    __name(this, "PrimaryKeyBuilder");
   }
-  static [entityKind] = "PgForeignKeyBuilder";
+  static [entityKind] = "PgPrimaryKeyBuilder";
   /** @internal */
-  reference;
+  columns;
   /** @internal */
-  _onUpdate = "no action";
-  /** @internal */
-  _onDelete = "no action";
-  constructor(config, actions) {
-    this.reference = () => {
-      const { name, columns, foreignColumns } = config();
-      return { name, columns, foreignTable: foreignColumns[0].table, foreignColumns };
-    };
-    if (actions) {
-      this._onUpdate = actions.onUpdate;
-      this._onDelete = actions.onDelete;
-    }
-  }
-  onUpdate(action) {
-    this._onUpdate = action === void 0 ? "no action" : action;
-    return this;
-  }
-  onDelete(action) {
-    this._onDelete = action === void 0 ? "no action" : action;
-    return this;
-  }
-  /** @internal */
-  build(table) {
-    return new ForeignKey(table, this);
-  }
-};
-var ForeignKey = class {
-  static {
-    __name(this, "ForeignKey");
-  }
-  constructor(table, builder) {
-    this.table = table;
-    this.reference = builder.reference;
-    this.onUpdate = builder._onUpdate;
-    this.onDelete = builder._onDelete;
-  }
-  static [entityKind] = "PgForeignKey";
-  reference;
-  onUpdate;
-  onDelete;
-  getName() {
-    const { name, columns, foreignColumns } = this.reference();
-    const columnNames = columns.map((column) => column.name);
-    const foreignColumnNames = foreignColumns.map((column) => column.name);
-    const chunks = [
-      this.table[TableName],
-      ...columnNames,
-      foreignColumns[0].table[TableName],
-      ...foreignColumnNames
-    ];
-    return name ?? `${chunks.join("_")}_fk`;
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/tracing-utils.js
-function iife(fn, ...args) {
-  return fn(...args);
-}
-__name(iife, "iife");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/pg-core/unique-constraint.js
-function uniqueKeyName(table, columns) {
-  return `${table[TableName]}_${columns.join("_")}_unique`;
-}
-__name(uniqueKeyName, "uniqueKeyName");
-var UniqueConstraintBuilder = class {
-  static {
-    __name(this, "UniqueConstraintBuilder");
-  }
+  name;
   constructor(columns, name) {
-    this.name = name;
     this.columns = columns;
-  }
-  static [entityKind] = "PgUniqueConstraintBuilder";
-  /** @internal */
-  columns;
-  /** @internal */
-  nullsNotDistinctConfig = false;
-  nullsNotDistinct() {
-    this.nullsNotDistinctConfig = true;
-    return this;
+    this.name = name;
   }
   /** @internal */
   build(table) {
-    return new UniqueConstraint(table, this.columns, this.nullsNotDistinctConfig, this.name);
+    return new PrimaryKey(table, this.columns, this.name);
   }
 };
-var UniqueOnConstraintBuilder = class {
+var PrimaryKey = class {
   static {
-    __name(this, "UniqueOnConstraintBuilder");
+    __name(this, "PrimaryKey");
   }
-  static [entityKind] = "PgUniqueOnConstraintBuilder";
-  /** @internal */
-  name;
-  constructor(name) {
-    this.name = name;
-  }
-  on(...columns) {
-    return new UniqueConstraintBuilder(columns, this.name);
-  }
-};
-var UniqueConstraint = class {
-  static {
-    __name(this, "UniqueConstraint");
-  }
-  constructor(table, columns, nullsNotDistinct, name) {
+  constructor(table, columns, name) {
     this.table = table;
     this.columns = columns;
-    this.name = name ?? uniqueKeyName(this.table, this.columns.map((column) => column.name));
-    this.nullsNotDistinct = nullsNotDistinct;
+    this.name = name;
   }
-  static [entityKind] = "PgUniqueConstraint";
+  static [entityKind] = "PgPrimaryKey";
   columns;
   name;
-  nullsNotDistinct = false;
   getName() {
-    return this.name;
+    return this.name ?? `${this.table[PgTable.Symbol.Name]}_${this.columns.map((column) => column.name).join("_")}_pk`;
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/pg-core/utils/array.js
-function parsePgArrayValue(arrayString, startFrom, inQuotes) {
-  for (let i = startFrom; i < arrayString.length; i++) {
-    const char = arrayString[i];
-    if (char === "\\") {
-      i++;
-      continue;
-    }
-    if (char === '"') {
-      return [arrayString.slice(startFrom, i).replace(/\\/g, ""), i + 1];
-    }
-    if (inQuotes) {
-      continue;
-    }
-    if (char === "," || char === "}") {
-      return [arrayString.slice(startFrom, i).replace(/\\/g, ""), i];
-    }
-  }
-  return [arrayString.slice(startFrom).replace(/\\/g, ""), arrayString.length];
-}
-__name(parsePgArrayValue, "parsePgArrayValue");
-function parsePgNestedArray(arrayString, startFrom = 0) {
-  const result = [];
-  let i = startFrom;
-  let lastCharIsComma = false;
-  while (i < arrayString.length) {
-    const char = arrayString[i];
-    if (char === ",") {
-      if (lastCharIsComma || i === startFrom) {
-        result.push("");
-      }
-      lastCharIsComma = true;
-      i++;
-      continue;
-    }
-    lastCharIsComma = false;
-    if (char === "\\") {
-      i += 2;
-      continue;
-    }
-    if (char === '"') {
-      const [value2, startFrom2] = parsePgArrayValue(arrayString, i + 1, true);
-      result.push(value2);
-      i = startFrom2;
-      continue;
-    }
-    if (char === "}") {
-      return [result, i + 1];
-    }
-    if (char === "{") {
-      const [value2, startFrom2] = parsePgNestedArray(arrayString, i + 1);
-      result.push(value2);
-      i = startFrom2;
-      continue;
-    }
-    const [value, newStartFrom] = parsePgArrayValue(arrayString, i, false);
-    result.push(value);
-    i = newStartFrom;
-  }
-  return [result, i];
-}
-__name(parsePgNestedArray, "parsePgNestedArray");
-function parsePgArray(arrayString) {
-  const [result] = parsePgNestedArray(arrayString, 1);
-  return result;
-}
-__name(parsePgArray, "parsePgArray");
-function makePgArray(array) {
-  return `{${array.map((item) => {
-    if (Array.isArray(item)) {
-      return makePgArray(item);
-    }
-    if (typeof item === "string") {
-      return `"${item.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
-    }
-    return `${item}`;
-  }).join(",")}}`;
-}
-__name(makePgArray, "makePgArray");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/pg-core/columns/common.js
-var PgColumnBuilder = class extends ColumnBuilder {
-  static {
-    __name(this, "PgColumnBuilder");
-  }
-  foreignKeyConfigs = [];
-  static [entityKind] = "PgColumnBuilder";
-  array(size) {
-    return new PgArrayBuilder(this.config.name, this, size);
-  }
-  references(ref, actions = {}) {
-    this.foreignKeyConfigs.push({ ref, actions });
-    return this;
-  }
-  unique(name, config) {
-    this.config.isUnique = true;
-    this.config.uniqueName = name;
-    this.config.uniqueType = config?.nulls;
-    return this;
-  }
-  generatedAlwaysAs(as) {
-    this.config.generated = {
-      as,
-      type: "always",
-      mode: "stored"
-    };
-    return this;
-  }
-  /** @internal */
-  buildForeignKeys(column, table) {
-    return this.foreignKeyConfigs.map(({ ref, actions }) => {
-      return iife(
-        (ref2, actions2) => {
-          const builder = new ForeignKeyBuilder(() => {
-            const foreignColumn = ref2();
-            return { columns: [column], foreignColumns: [foreignColumn] };
-          });
-          if (actions2.onUpdate) {
-            builder.onUpdate(actions2.onUpdate);
-          }
-          if (actions2.onDelete) {
-            builder.onDelete(actions2.onDelete);
-          }
-          return builder.build(table);
-        },
-        ref,
-        actions
-      );
-    });
-  }
-  /** @internal */
-  buildExtraConfigColumn(table) {
-    return new ExtraConfigColumn(table, this.config);
-  }
-};
-var PgColumn = class extends Column {
-  static {
-    __name(this, "PgColumn");
-  }
-  constructor(table, config) {
-    if (!config.uniqueName) {
-      config.uniqueName = uniqueKeyName(table, [config.name]);
-    }
-    super(table, config);
-    this.table = table;
-  }
-  static [entityKind] = "PgColumn";
-};
-var ExtraConfigColumn = class extends PgColumn {
-  static {
-    __name(this, "ExtraConfigColumn");
-  }
-  static [entityKind] = "ExtraConfigColumn";
-  getSQLType() {
-    return this.getSQLType();
-  }
-  indexConfig = {
-    order: this.config.order ?? "asc",
-    nulls: this.config.nulls ?? "last",
-    opClass: this.config.opClass
-  };
-  defaultConfig = {
-    order: "asc",
-    nulls: "last",
-    opClass: void 0
-  };
-  asc() {
-    this.indexConfig.order = "asc";
-    return this;
-  }
-  desc() {
-    this.indexConfig.order = "desc";
-    return this;
-  }
-  nullsFirst() {
-    this.indexConfig.nulls = "first";
-    return this;
-  }
-  nullsLast() {
-    this.indexConfig.nulls = "last";
-    return this;
-  }
-  /**
-   * ### PostgreSQL documentation quote
-   *
-   * > An operator class with optional parameters can be specified for each column of an index.
-   * The operator class identifies the operators to be used by the index for that column.
-   * For example, a B-tree index on four-byte integers would use the int4_ops class;
-   * this operator class includes comparison functions for four-byte integers.
-   * In practice the default operator class for the column's data type is usually sufficient.
-   * The main point of having operator classes is that for some data types, there could be more than one meaningful ordering.
-   * For example, we might want to sort a complex-number data type either by absolute value or by real part.
-   * We could do this by defining two operator classes for the data type and then selecting the proper class when creating an index.
-   * More information about operator classes check:
-   *
-   * ### Useful links
-   * https://www.postgresql.org/docs/current/sql-createindex.html
-   *
-   * https://www.postgresql.org/docs/current/indexes-opclass.html
-   *
-   * https://www.postgresql.org/docs/current/xindex.html
-   *
-   * ### Additional types
-   * If you have the `pg_vector` extension installed in your database, you can use the
-   * `vector_l2_ops`, `vector_ip_ops`, `vector_cosine_ops`, `vector_l1_ops`, `bit_hamming_ops`, `bit_jaccard_ops`, `halfvec_l2_ops`, `sparsevec_l2_ops` options, which are predefined types.
-   *
-   * **You can always specify any string you want in the operator class, in case Drizzle doesn't have it natively in its types**
-   *
-   * @param opClass
-   * @returns
-   */
-  op(opClass) {
-    this.indexConfig.opClass = opClass;
-    return this;
-  }
-};
-var IndexedColumn = class {
-  static {
-    __name(this, "IndexedColumn");
-  }
-  static [entityKind] = "IndexedColumn";
-  constructor(name, keyAsName, type, indexConfig) {
-    this.name = name;
-    this.keyAsName = keyAsName;
-    this.type = type;
-    this.indexConfig = indexConfig;
-  }
-  name;
-  keyAsName;
-  type;
-  indexConfig;
-};
-var PgArrayBuilder = class extends PgColumnBuilder {
-  static {
-    __name(this, "PgArrayBuilder");
-  }
-  static [entityKind] = "PgArrayBuilder";
-  constructor(name, baseBuilder, size) {
-    super(name, "array", "PgArray");
-    this.config.baseBuilder = baseBuilder;
-    this.config.size = size;
-  }
-  /** @internal */
-  build(table) {
-    const baseColumn = this.config.baseBuilder.build(table);
-    return new PgArray(
-      table,
-      this.config,
-      baseColumn
-    );
-  }
-};
-var PgArray = class _PgArray extends PgColumn {
-  static {
-    __name(this, "PgArray");
-  }
-  constructor(table, config, baseColumn, range) {
-    super(table, config);
-    this.baseColumn = baseColumn;
-    this.range = range;
-    this.size = config.size;
-  }
-  size;
-  static [entityKind] = "PgArray";
-  getSQLType() {
-    return `${this.baseColumn.getSQLType()}[${typeof this.size === "number" ? this.size : ""}]`;
-  }
-  mapFromDriverValue(value) {
-    if (typeof value === "string") {
-      value = parsePgArray(value);
-    }
-    return value.map((v) => this.baseColumn.mapFromDriverValue(v));
-  }
-  mapToDriverValue(value, isNestedArray = false) {
-    const a = value.map(
-      (v) => v === null ? null : is(this.baseColumn, _PgArray) ? this.baseColumn.mapToDriverValue(v, true) : this.baseColumn.mapToDriverValue(v)
-    );
-    if (isNestedArray) return a;
-    return makePgArray(a);
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/pg-core/columns/enum.js
-var PgEnumObjectColumnBuilder = class extends PgColumnBuilder {
-  static {
-    __name(this, "PgEnumObjectColumnBuilder");
-  }
-  static [entityKind] = "PgEnumObjectColumnBuilder";
-  constructor(name, enumInstance) {
-    super(name, "string", "PgEnumObjectColumn");
-    this.config.enum = enumInstance;
-  }
-  /** @internal */
-  build(table) {
-    return new PgEnumObjectColumn(
-      table,
-      this.config
-    );
-  }
-};
-var PgEnumObjectColumn = class extends PgColumn {
-  static {
-    __name(this, "PgEnumObjectColumn");
-  }
-  static [entityKind] = "PgEnumObjectColumn";
-  enum;
-  enumValues = this.config.enum.enumValues;
-  constructor(table, config) {
-    super(table, config);
-    this.enum = config.enum;
-  }
-  getSQLType() {
-    return this.enum.enumName;
-  }
-};
-var isPgEnumSym = /* @__PURE__ */ Symbol.for("drizzle:isPgEnum");
-function isPgEnum(obj) {
-  return !!obj && typeof obj === "function" && isPgEnumSym in obj && obj[isPgEnumSym] === true;
-}
-__name(isPgEnum, "isPgEnum");
-var PgEnumColumnBuilder = class extends PgColumnBuilder {
-  static {
-    __name(this, "PgEnumColumnBuilder");
-  }
-  static [entityKind] = "PgEnumColumnBuilder";
-  constructor(name, enumInstance) {
-    super(name, "string", "PgEnumColumn");
-    this.config.enum = enumInstance;
-  }
-  /** @internal */
-  build(table) {
-    return new PgEnumColumn(
-      table,
-      this.config
-    );
-  }
-};
-var PgEnumColumn = class extends PgColumn {
-  static {
-    __name(this, "PgEnumColumn");
-  }
-  static [entityKind] = "PgEnumColumn";
-  enum = this.config.enum;
-  enumValues = this.config.enum.enumValues;
-  constructor(table, config) {
-    super(table, config);
-    this.enum = config.enum;
-  }
-  getSQLType() {
-    return this.enum.enumName;
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/subquery.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/subquery.js
+var SubqueryConfig = /* @__PURE__ */ Symbol.for("drizzle:SubqueryConfig");
 var Subquery = class {
   static {
     __name(this, "Subquery");
   }
   static [entityKind] = "Subquery";
-  constructor(sql2, fields, alias, isWith = false, usedTables = []) {
-    this._ = {
-      brand: "Subquery",
+  /** @internal */
+  [SubqueryConfig];
+  constructor(sql2, selection, alias, isWith = false) {
+    this[SubqueryConfig] = {
       sql: sql2,
-      selectedFields: fields,
+      selection,
       alias,
-      isWith,
-      usedTables
+      isWith
     };
   }
   // getSQL(): SQL<unknown> {
@@ -2929,10 +2376,16 @@ var WithSubquery = class extends Subquery {
   static [entityKind] = "WithSubquery";
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/version.js
-var version = "0.45.1";
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/tracing-utils.js
+function iife(fn, ...args) {
+  return fn(...args);
+}
+__name(iife, "iife");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/tracing.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/version.js
+var version = "0.29.5";
+
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/tracing.js
 var otel;
 var rawTracer;
 var tracer = {
@@ -2967,10 +2420,10 @@ var tracer = {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/view-common.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/view-common.js
 var ViewBaseConfig = /* @__PURE__ */ Symbol.for("drizzle:ViewBaseConfig");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sql/sql.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sql/sql.js
 var FakePrimitiveParam = class {
   static {
     __name(this, "FakePrimitiveParam");
@@ -2978,7 +2431,7 @@ var FakePrimitiveParam = class {
   static [entityKind] = "FakePrimitiveParam";
 };
 function isSQLWrapper(value) {
-  return value !== null && value !== void 0 && typeof value.getSQL === "function";
+  return typeof value === "object" && value !== null && "getSQL" in value && typeof value.getSQL === "function";
 }
 __name(isSQLWrapper, "isSQLWrapper");
 function mergeQueries(queries) {
@@ -3015,21 +2468,11 @@ var SQL = class _SQL {
   }
   constructor(queryChunks) {
     this.queryChunks = queryChunks;
-    for (const chunk of queryChunks) {
-      if (is(chunk, Table)) {
-        const schemaName = chunk[Table.Symbol.Schema];
-        this.usedTables.push(
-          schemaName === void 0 ? chunk[Table.Symbol.Name] : schemaName + "." + chunk[Table.Symbol.Name]
-        );
-      }
-    }
   }
   static [entityKind] = "SQL";
   /** @internal */
   decoder = noopDecoder;
   shouldInlineParams = false;
-  /** @internal */
-  usedTables = [];
   append(query) {
     this.queryChunks.push(...query.queryChunks);
     return this;
@@ -3050,7 +2493,6 @@ var SQL = class _SQL {
       paramStartIndex: _config.paramStartIndex || { value: 0 }
     });
     const {
-      casing,
       escapeName,
       escapeParam,
       prepareTyping,
@@ -3088,33 +2530,22 @@ var SQL = class _SQL {
         const schemaName = chunk[Table.Symbol.Schema];
         const tableName = chunk[Table.Symbol.Name];
         return {
-          sql: schemaName === void 0 || chunk[IsAlias] ? escapeName(tableName) : escapeName(schemaName) + "." + escapeName(tableName),
+          sql: schemaName === void 0 ? escapeName(tableName) : escapeName(schemaName) + "." + escapeName(tableName),
           params: []
         };
       }
       if (is(chunk, Column)) {
-        const columnName = casing.getColumnCasing(chunk);
-        if (_config.invokeSource === "indexes") {
-          return { sql: escapeName(columnName), params: [] };
-        }
-        const schemaName = chunk.table[Table.Symbol.Schema];
-        return {
-          sql: chunk.table[IsAlias] || schemaName === void 0 ? escapeName(chunk.table[Table.Symbol.Name]) + "." + escapeName(columnName) : escapeName(schemaName) + "." + escapeName(chunk.table[Table.Symbol.Name]) + "." + escapeName(columnName),
-          params: []
-        };
+        return { sql: escapeName(chunk.table[Table.Symbol.Name]) + "." + escapeName(chunk.name), params: [] };
       }
       if (is(chunk, View)) {
         const schemaName = chunk[ViewBaseConfig].schema;
         const viewName = chunk[ViewBaseConfig].name;
         return {
-          sql: schemaName === void 0 || chunk[ViewBaseConfig].isAlias ? escapeName(viewName) : escapeName(schemaName) + "." + escapeName(viewName),
+          sql: schemaName === void 0 ? escapeName(viewName) : escapeName(schemaName) + "." + escapeName(viewName),
           params: []
         };
       }
       if (is(chunk, Param)) {
-        if (is(chunk.value, Placeholder)) {
-          return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
-        }
         const mappedValue = chunk.value === null ? null : chunk.encoder.mapToDriverValue(chunk.value);
         if (is(mappedValue, _SQL)) {
           return this.buildQueryFromSourceParams([mappedValue], config);
@@ -3122,39 +2553,30 @@ var SQL = class _SQL {
         if (inlineParams) {
           return { sql: this.mapInlineParam(mappedValue, config), params: [] };
         }
-        let typings = ["none"];
-        if (prepareTyping) {
+        let typings;
+        if (prepareTyping !== void 0) {
           typings = [prepareTyping(chunk.encoder)];
         }
         return { sql: escapeParam(paramStartIndex.value++, mappedValue), params: [mappedValue], typings };
       }
       if (is(chunk, Placeholder)) {
-        return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
+        return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk] };
       }
       if (is(chunk, _SQL.Aliased) && chunk.fieldAlias !== void 0) {
         return { sql: escapeName(chunk.fieldAlias), params: [] };
       }
       if (is(chunk, Subquery)) {
-        if (chunk._.isWith) {
-          return { sql: escapeName(chunk._.alias), params: [] };
+        if (chunk[SubqueryConfig].isWith) {
+          return { sql: escapeName(chunk[SubqueryConfig].alias), params: [] };
         }
         return this.buildQueryFromSourceParams([
           new StringChunk("("),
-          chunk._.sql,
+          chunk[SubqueryConfig].sql,
           new StringChunk(") "),
-          new Name(chunk._.alias)
+          new Name(chunk[SubqueryConfig].alias)
         ], config);
       }
-      if (isPgEnum(chunk)) {
-        if (chunk.schema) {
-          return { sql: escapeName(chunk.schema) + "." + escapeName(chunk.enumName), params: [] };
-        }
-        return { sql: escapeName(chunk.enumName), params: [] };
-      }
       if (isSQLWrapper(chunk)) {
-        if (chunk.shouldOmitSQLParens?.()) {
-          return this.buildQueryFromSourceParams([chunk.getSQL()], config);
-        }
         return this.buildQueryFromSourceParams([
           new StringChunk("("),
           chunk.getSQL(),
@@ -3164,7 +2586,7 @@ var SQL = class _SQL {
       if (inlineParams) {
         return { sql: this.mapInlineParam(chunk, config), params: [] };
       }
-      return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk], typings: ["none"] };
+      return { sql: escapeParam(paramStartIndex.value++, chunk), params: [chunk] };
     }));
   }
   mapInlineParam(chunk, { escapeString }) {
@@ -3202,15 +2624,6 @@ var SQL = class _SQL {
   inlineParams() {
     this.shouldInlineParams = true;
     return this;
-  }
-  /**
-   * This method is used to conditionally include a part of the query.
-   *
-   * @param condition - Condition to check
-   * @returns itself if the condition is `true`, otherwise `undefined`
-   */
-  if(condition) {
-    return condition ? this : void 0;
   }
 };
 var Name = class {
@@ -3355,17 +2768,10 @@ function fillPlaceholders(params, values) {
       }
       return values[p.name];
     }
-    if (is(p, Param) && is(p.value, Placeholder)) {
-      if (!(p.value.name in values)) {
-        throw new Error(`No value for placeholder "${p.value.name}" was provided`);
-      }
-      return p.encoder.mapToDriverValue(values[p.value.name]);
-    }
     return p;
   });
 }
 __name(fillPlaceholders, "fillPlaceholders");
-var IsDrizzleView = /* @__PURE__ */ Symbol.for("drizzle:IsDrizzleView");
 var View = class {
   static {
     __name(this, "View");
@@ -3373,8 +2779,6 @@ var View = class {
   static [entityKind] = "View";
   /** @internal */
   [ViewBaseConfig];
-  /** @internal */
-  [IsDrizzleView] = true;
   constructor({ name: name2, schema, selectedFields, query }) {
     this[ViewBaseConfig] = {
       name: name2,
@@ -3400,190 +2804,7 @@ Subquery.prototype.getSQL = function() {
   return new SQL([this]);
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/utils.js
-function mapResultRow(columns, row, joinsNotNullableMap) {
-  const nullifyMap = {};
-  const result = columns.reduce(
-    (result2, { path, field }, columnIndex) => {
-      let decoder;
-      if (is(field, Column)) {
-        decoder = field;
-      } else if (is(field, SQL)) {
-        decoder = field.decoder;
-      } else if (is(field, Subquery)) {
-        decoder = field._.sql.decoder;
-      } else {
-        decoder = field.sql.decoder;
-      }
-      let node = result2;
-      for (const [pathChunkIndex, pathChunk] of path.entries()) {
-        if (pathChunkIndex < path.length - 1) {
-          if (!(pathChunk in node)) {
-            node[pathChunk] = {};
-          }
-          node = node[pathChunk];
-        } else {
-          const rawValue = row[columnIndex];
-          const value = node[pathChunk] = rawValue === null ? null : decoder.mapFromDriverValue(rawValue);
-          if (joinsNotNullableMap && is(field, Column) && path.length === 2) {
-            const objectName = path[0];
-            if (!(objectName in nullifyMap)) {
-              nullifyMap[objectName] = value === null ? getTableName(field.table) : false;
-            } else if (typeof nullifyMap[objectName] === "string" && nullifyMap[objectName] !== getTableName(field.table)) {
-              nullifyMap[objectName] = false;
-            }
-          }
-        }
-      }
-      return result2;
-    },
-    {}
-  );
-  if (joinsNotNullableMap && Object.keys(nullifyMap).length > 0) {
-    for (const [objectName, tableName] of Object.entries(nullifyMap)) {
-      if (typeof tableName === "string" && !joinsNotNullableMap[tableName]) {
-        result[objectName] = null;
-      }
-    }
-  }
-  return result;
-}
-__name(mapResultRow, "mapResultRow");
-function orderSelectedFields(fields, pathPrefix) {
-  return Object.entries(fields).reduce((result, [name, field]) => {
-    if (typeof name !== "string") {
-      return result;
-    }
-    const newPath = pathPrefix ? [...pathPrefix, name] : [name];
-    if (is(field, Column) || is(field, SQL) || is(field, SQL.Aliased) || is(field, Subquery)) {
-      result.push({ path: newPath, field });
-    } else if (is(field, Table)) {
-      result.push(...orderSelectedFields(field[Table.Symbol.Columns], newPath));
-    } else {
-      result.push(...orderSelectedFields(field, newPath));
-    }
-    return result;
-  }, []);
-}
-__name(orderSelectedFields, "orderSelectedFields");
-function haveSameKeys(left, right) {
-  const leftKeys = Object.keys(left);
-  const rightKeys = Object.keys(right);
-  if (leftKeys.length !== rightKeys.length) {
-    return false;
-  }
-  for (const [index, key] of leftKeys.entries()) {
-    if (key !== rightKeys[index]) {
-      return false;
-    }
-  }
-  return true;
-}
-__name(haveSameKeys, "haveSameKeys");
-function mapUpdateSet(table, values) {
-  const entries = Object.entries(values).filter(([, value]) => value !== void 0).map(([key, value]) => {
-    if (is(value, SQL) || is(value, Column)) {
-      return [key, value];
-    } else {
-      return [key, new Param(value, table[Table.Symbol.Columns][key])];
-    }
-  });
-  if (entries.length === 0) {
-    throw new Error("No values to set");
-  }
-  return Object.fromEntries(entries);
-}
-__name(mapUpdateSet, "mapUpdateSet");
-function applyMixins(baseClass, extendedClasses) {
-  for (const extendedClass of extendedClasses) {
-    for (const name of Object.getOwnPropertyNames(extendedClass.prototype)) {
-      if (name === "constructor") continue;
-      Object.defineProperty(
-        baseClass.prototype,
-        name,
-        Object.getOwnPropertyDescriptor(extendedClass.prototype, name) || /* @__PURE__ */ Object.create(null)
-      );
-    }
-  }
-}
-__name(applyMixins, "applyMixins");
-function getTableColumns(table) {
-  return table[Table.Symbol.Columns];
-}
-__name(getTableColumns, "getTableColumns");
-function getTableLikeName(table) {
-  return is(table, Subquery) ? table._.alias : is(table, View) ? table[ViewBaseConfig].name : is(table, SQL) ? void 0 : table[Table.Symbol.IsAlias] ? table[Table.Symbol.Name] : table[Table.Symbol.BaseName];
-}
-__name(getTableLikeName, "getTableLikeName");
-function getColumnNameAndConfig(a, b) {
-  return {
-    name: typeof a === "string" && a.length > 0 ? a : "",
-    config: typeof a === "object" ? a : b
-  };
-}
-__name(getColumnNameAndConfig, "getColumnNameAndConfig");
-var textDecoder = typeof TextDecoder === "undefined" ? null : new TextDecoder();
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/pg-core/table.js
-var InlineForeignKeys = /* @__PURE__ */ Symbol.for("drizzle:PgInlineForeignKeys");
-var EnableRLS = /* @__PURE__ */ Symbol.for("drizzle:EnableRLS");
-var PgTable = class extends Table {
-  static {
-    __name(this, "PgTable");
-  }
-  static [entityKind] = "PgTable";
-  /** @internal */
-  static Symbol = Object.assign({}, Table.Symbol, {
-    InlineForeignKeys,
-    EnableRLS
-  });
-  /**@internal */
-  [InlineForeignKeys] = [];
-  /** @internal */
-  [EnableRLS] = false;
-  /** @internal */
-  [Table.Symbol.ExtraConfigBuilder] = void 0;
-  /** @internal */
-  [Table.Symbol.ExtraConfigColumns] = {};
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/pg-core/primary-keys.js
-var PrimaryKeyBuilder = class {
-  static {
-    __name(this, "PrimaryKeyBuilder");
-  }
-  static [entityKind] = "PgPrimaryKeyBuilder";
-  /** @internal */
-  columns;
-  /** @internal */
-  name;
-  constructor(columns, name) {
-    this.columns = columns;
-    this.name = name;
-  }
-  /** @internal */
-  build(table) {
-    return new PrimaryKey(table, this.columns, this.name);
-  }
-};
-var PrimaryKey = class {
-  static {
-    __name(this, "PrimaryKey");
-  }
-  constructor(table, columns, name) {
-    this.table = table;
-    this.columns = columns;
-    this.name = name;
-  }
-  static [entityKind] = "PgPrimaryKey";
-  columns;
-  name;
-  getName() {
-    return this.name ?? `${this.table[PgTable.Symbol.Name]}_${this.columns.map((column) => column.name).join("_")}_pk`;
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sql/expressions/conditions.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sql/expressions/conditions.js
 function bindIfParam(value, column) {
   if (isDriverValueEncoder(column) && !isSQLWrapper(value) && !is(value, Param) && !is(value, Placeholder) && !is(value, Column) && !is(value, Table) && !is(value, View)) {
     return new Param(value, column);
@@ -3650,7 +2871,7 @@ var lte = /* @__PURE__ */ __name((left, right) => {
 function inArray(column, values) {
   if (Array.isArray(values)) {
     if (values.length === 0) {
-      return sql`false`;
+      throw new Error("inArray requires at least one value");
     }
     return sql`${column} in ${values.map((v) => bindIfParam(v, column))}`;
   }
@@ -3660,7 +2881,7 @@ __name(inArray, "inArray");
 function notInArray(column, values) {
   if (Array.isArray(values)) {
     if (values.length === 0) {
-      return sql`true`;
+      throw new Error("notInArray requires at least one value");
     }
     return sql`${column} not in ${values.map((v) => bindIfParam(v, column))}`;
   }
@@ -3714,7 +2935,7 @@ function notIlike(column, value) {
 }
 __name(notIlike, "notIlike");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sql/expressions/select.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sql/expressions/select.js
 function asc(column) {
   return sql`${column} asc`;
 }
@@ -3724,7 +2945,7 @@ function desc(column) {
 }
 __name(desc, "desc");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/relations.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/relations.js
 var Relation = class {
   static {
     __name(this, "Relation");
@@ -3832,8 +3053,8 @@ function extractTablesRelationalConfig(schema, configHelpers) {
   const relationsBuffer = {};
   const tablesConfig = {};
   for (const [key, value] of Object.entries(schema)) {
-    if (is(value, Table)) {
-      const dbName = getTableUniqueName(value);
+    if (isTable(value)) {
+      const dbName = value[Table.Symbol.Name];
       const bufferedRelations = relationsBuffer[dbName];
       tableNamesMap[dbName] = key;
       tablesConfig[key] = {
@@ -3851,7 +3072,7 @@ function extractTablesRelationalConfig(schema, configHelpers) {
           tablesConfig[key].primaryKey.push(column);
         }
       }
-      const extraConfig = value[Table.Symbol.ExtraConfigBuilder]?.(value[Table.Symbol.ExtraConfigColumns]);
+      const extraConfig = value[Table.Symbol.ExtraConfigBuilder]?.(value);
       if (extraConfig) {
         for (const configEntry of Object.values(extraConfig)) {
           if (is(configEntry, PrimaryKeyBuilder)) {
@@ -3860,7 +3081,7 @@ function extractTablesRelationalConfig(schema, configHelpers) {
         }
       }
     } else if (is(value, Relations)) {
-      const dbName = getTableUniqueName(value.table);
+      const dbName = value.table[Table.Symbol.Name];
       const tableName = tableNamesMap[dbName];
       const relations2 = value.config(
         configHelpers(value.table)
@@ -3912,7 +3133,7 @@ function normalizeRelation(schema, tableNamesMap, relation) {
       references: relation.config.references
     };
   }
-  const referencedTableTsName = tableNamesMap[getTableUniqueName(relation.referencedTable)];
+  const referencedTableTsName = tableNamesMap[relation.referencedTable[Table.Symbol.Name]];
   if (!referencedTableTsName) {
     throw new Error(
       `Table "${relation.referencedTable[Table.Symbol.Name]}" not found in schema`
@@ -3923,7 +3144,7 @@ function normalizeRelation(schema, tableNamesMap, relation) {
     throw new Error(`Table "${referencedTableTsName}" not found in schema`);
   }
   const sourceTable = relation.sourceTable;
-  const sourceTableTsName = tableNamesMap[getTableUniqueName(sourceTable)];
+  const sourceTableTsName = tableNamesMap[sourceTable[Table.Symbol.Name]];
   if (!sourceTableTsName) {
     throw new Error(
       `Table "${sourceTable[Table.Symbol.Name]}" not found in schema`
@@ -4005,7 +3226,7 @@ function mapRelationalRow(tablesConfig, tableConfig, row, buildQueryResultSelect
 }
 __name(mapRelationalRow, "mapRelationalRow");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/alias.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/alias.js
 var ColumnAliasProxyHandler = class {
   static {
     __name(this, "ColumnAliasProxyHandler");
@@ -4114,7 +3335,7 @@ function mapColumnsInSQLToAlias(query, alias) {
 }
 __name(mapColumnsInSQLToAlias, "mapColumnsInSQLToAlias");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/selection-proxy.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/selection-proxy.js
 var SelectionProxyHandler = class _SelectionProxyHandler {
   static {
     __name(this, "SelectionProxyHandler");
@@ -4125,11 +3346,11 @@ var SelectionProxyHandler = class _SelectionProxyHandler {
     this.config = { ...config };
   }
   get(subquery, prop) {
-    if (prop === "_") {
+    if (prop === SubqueryConfig) {
       return {
-        ...subquery["_"],
-        selectedFields: new Proxy(
-          subquery._.selectedFields,
+        ...subquery[SubqueryConfig],
+        selection: new Proxy(
+          subquery[SubqueryConfig].selection,
           this
         )
       };
@@ -4146,7 +3367,7 @@ var SelectionProxyHandler = class _SelectionProxyHandler {
     if (typeof prop === "symbol") {
       return subquery[prop];
     }
-    const columns = is(subquery, Subquery) ? subquery._.selectedFields : is(subquery, View) ? subquery[ViewBaseConfig].selectedFields : subquery;
+    const columns = is(subquery, Subquery) ? subquery[SubqueryConfig].selection : is(subquery, View) ? subquery[ViewBaseConfig].selectedFields : subquery;
     const value = columns[prop];
     if (is(value, SQL.Aliased)) {
       if (this.config.sqlAliasedBehavior === "sql" && !value.isSelectionField) {
@@ -4185,7 +3406,7 @@ var SelectionProxyHandler = class _SelectionProxyHandler {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/query-promise.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/query-promise.js
 var QueryPromise = class {
   static {
     __name(this, "QueryPromise");
@@ -4212,8 +3433,512 @@ var QueryPromise = class {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/foreign-keys.js
-var ForeignKeyBuilder2 = class {
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/table.js
+var InlineForeignKeys2 = /* @__PURE__ */ Symbol.for("drizzle:SQLiteInlineForeignKeys");
+var SQLiteTable = class extends Table {
+  static {
+    __name(this, "SQLiteTable");
+  }
+  static [entityKind] = "SQLiteTable";
+  /** @internal */
+  static Symbol = Object.assign({}, Table.Symbol, {
+    InlineForeignKeys: InlineForeignKeys2
+  });
+  /** @internal */
+  [Table.Symbol.Columns];
+  /** @internal */
+  [InlineForeignKeys2] = [];
+  /** @internal */
+  [Table.Symbol.ExtraConfigBuilder] = void 0;
+};
+function sqliteTableBase(name, columns, extraConfig, schema, baseName = name) {
+  const rawTable = new SQLiteTable(name, schema, baseName);
+  const builtColumns = Object.fromEntries(
+    Object.entries(columns).map(([name2, colBuilderBase]) => {
+      const colBuilder = colBuilderBase;
+      const column = colBuilder.build(rawTable);
+      rawTable[InlineForeignKeys2].push(...colBuilder.buildForeignKeys(column, rawTable));
+      return [name2, column];
+    })
+  );
+  const table = Object.assign(rawTable, builtColumns);
+  table[Table.Symbol.Columns] = builtColumns;
+  if (extraConfig) {
+    table[SQLiteTable.Symbol.ExtraConfigBuilder] = extraConfig;
+  }
+  return table;
+}
+__name(sqliteTableBase, "sqliteTableBase");
+var sqliteTable = /* @__PURE__ */ __name((name, columns, extraConfig) => {
+  return sqliteTableBase(name, columns, extraConfig);
+}, "sqliteTable");
+
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/utils.js
+function mapResultRow(columns, row, joinsNotNullableMap) {
+  const nullifyMap = {};
+  const result = columns.reduce(
+    (result2, { path, field }, columnIndex) => {
+      let decoder;
+      if (is(field, Column)) {
+        decoder = field;
+      } else if (is(field, SQL)) {
+        decoder = field.decoder;
+      } else {
+        decoder = field.sql.decoder;
+      }
+      let node = result2;
+      for (const [pathChunkIndex, pathChunk] of path.entries()) {
+        if (pathChunkIndex < path.length - 1) {
+          if (!(pathChunk in node)) {
+            node[pathChunk] = {};
+          }
+          node = node[pathChunk];
+        } else {
+          const rawValue = row[columnIndex];
+          const value = node[pathChunk] = rawValue === null ? null : decoder.mapFromDriverValue(rawValue);
+          if (joinsNotNullableMap && is(field, Column) && path.length === 2) {
+            const objectName = path[0];
+            if (!(objectName in nullifyMap)) {
+              nullifyMap[objectName] = value === null ? getTableName(field.table) : false;
+            } else if (typeof nullifyMap[objectName] === "string" && nullifyMap[objectName] !== getTableName(field.table)) {
+              nullifyMap[objectName] = false;
+            }
+          }
+        }
+      }
+      return result2;
+    },
+    {}
+  );
+  if (joinsNotNullableMap && Object.keys(nullifyMap).length > 0) {
+    for (const [objectName, tableName] of Object.entries(nullifyMap)) {
+      if (typeof tableName === "string" && !joinsNotNullableMap[tableName]) {
+        result[objectName] = null;
+      }
+    }
+  }
+  return result;
+}
+__name(mapResultRow, "mapResultRow");
+function orderSelectedFields(fields, pathPrefix) {
+  return Object.entries(fields).reduce((result, [name, field]) => {
+    if (typeof name !== "string") {
+      return result;
+    }
+    const newPath = pathPrefix ? [...pathPrefix, name] : [name];
+    if (is(field, Column) || is(field, SQL) || is(field, SQL.Aliased)) {
+      result.push({ path: newPath, field });
+    } else if (is(field, Table)) {
+      result.push(...orderSelectedFields(field[Table.Symbol.Columns], newPath));
+    } else {
+      result.push(...orderSelectedFields(field, newPath));
+    }
+    return result;
+  }, []);
+}
+__name(orderSelectedFields, "orderSelectedFields");
+function haveSameKeys(left, right) {
+  const leftKeys = Object.keys(left);
+  const rightKeys = Object.keys(right);
+  if (leftKeys.length !== rightKeys.length) {
+    return false;
+  }
+  for (const [index, key] of leftKeys.entries()) {
+    if (key !== rightKeys[index]) {
+      return false;
+    }
+  }
+  return true;
+}
+__name(haveSameKeys, "haveSameKeys");
+function mapUpdateSet(table, values) {
+  const entries = Object.entries(values).filter(([, value]) => value !== void 0).map(([key, value]) => {
+    if (is(value, SQL)) {
+      return [key, value];
+    } else {
+      return [key, new Param(value, table[Table.Symbol.Columns][key])];
+    }
+  });
+  if (entries.length === 0) {
+    throw new Error("No values to set");
+  }
+  return Object.fromEntries(entries);
+}
+__name(mapUpdateSet, "mapUpdateSet");
+function applyMixins(baseClass, extendedClasses) {
+  for (const extendedClass of extendedClasses) {
+    for (const name of Object.getOwnPropertyNames(extendedClass.prototype)) {
+      if (name === "constructor")
+        continue;
+      Object.defineProperty(
+        baseClass.prototype,
+        name,
+        Object.getOwnPropertyDescriptor(extendedClass.prototype, name) || /* @__PURE__ */ Object.create(null)
+      );
+    }
+  }
+}
+__name(applyMixins, "applyMixins");
+function getTableColumns(table) {
+  return table[Table.Symbol.Columns];
+}
+__name(getTableColumns, "getTableColumns");
+function getTableLikeName(table) {
+  return is(table, Subquery) ? table[SubqueryConfig].alias : is(table, View) ? table[ViewBaseConfig].name : is(table, SQL) ? void 0 : table[Table.Symbol.IsAlias] ? table[Table.Symbol.Name] : table[Table.Symbol.BaseName];
+}
+__name(getTableLikeName, "getTableLikeName");
+
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/query-builders/delete.js
+var SQLiteDeleteBase = class extends QueryPromise {
+  static {
+    __name(this, "SQLiteDeleteBase");
+  }
+  constructor(table, session, dialect, withList) {
+    super();
+    this.table = table;
+    this.session = session;
+    this.dialect = dialect;
+    this.config = { table, withList };
+  }
+  static [entityKind] = "SQLiteDelete";
+  /** @internal */
+  config;
+  /**
+   * Adds a `where` clause to the query.
+   *
+   * Calling this method will delete only those rows that fulfill a specified condition.
+   *
+   * See docs: {@link https://orm.drizzle.team/docs/delete}
+   *
+   * @param where the `where` clause.
+   *
+   * @example
+   * You can use conditional operators and `sql function` to filter the rows to be deleted.
+   *
+   * ```ts
+   * // Delete all cars with green color
+   * db.delete(cars).where(eq(cars.color, 'green'));
+   * // or
+   * db.delete(cars).where(sql`${cars.color} = 'green'`)
+   * ```
+   *
+   * You can logically combine conditional operators with `and()` and `or()` operators:
+   *
+   * ```ts
+   * // Delete all BMW cars with a green color
+   * db.delete(cars).where(and(eq(cars.color, 'green'), eq(cars.brand, 'BMW')));
+   *
+   * // Delete all cars with the green or blue color
+   * db.delete(cars).where(or(eq(cars.color, 'green'), eq(cars.color, 'blue')));
+   * ```
+   */
+  where(where) {
+    this.config.where = where;
+    return this;
+  }
+  returning(fields = this.table[SQLiteTable.Symbol.Columns]) {
+    this.config.returning = orderSelectedFields(fields);
+    return this;
+  }
+  /** @internal */
+  getSQL() {
+    return this.dialect.buildDeleteQuery(this.config);
+  }
+  toSQL() {
+    const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
+    return rest;
+  }
+  /** @internal */
+  _prepare(isOneTimeQuery = true) {
+    return this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
+      this.dialect.sqlToQuery(this.getSQL()),
+      this.config.returning,
+      this.config.returning ? "all" : "run"
+    );
+  }
+  prepare() {
+    return this._prepare(false);
+  }
+  run = /* @__PURE__ */ __name((placeholderValues) => {
+    return this._prepare().run(placeholderValues);
+  }, "run");
+  all = /* @__PURE__ */ __name((placeholderValues) => {
+    return this._prepare().all(placeholderValues);
+  }, "all");
+  get = /* @__PURE__ */ __name((placeholderValues) => {
+    return this._prepare().get(placeholderValues);
+  }, "get");
+  values = /* @__PURE__ */ __name((placeholderValues) => {
+    return this._prepare().values(placeholderValues);
+  }, "values");
+  async execute(placeholderValues) {
+    return this._prepare().execute(placeholderValues);
+  }
+  $dynamic() {
+    return this;
+  }
+};
+
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/query-builders/insert.js
+var SQLiteInsertBuilder = class {
+  static {
+    __name(this, "SQLiteInsertBuilder");
+  }
+  constructor(table, session, dialect, withList) {
+    this.table = table;
+    this.session = session;
+    this.dialect = dialect;
+    this.withList = withList;
+  }
+  static [entityKind] = "SQLiteInsertBuilder";
+  values(values) {
+    values = Array.isArray(values) ? values : [values];
+    if (values.length === 0) {
+      throw new Error("values() must be called with at least one value");
+    }
+    const mappedValues = values.map((entry) => {
+      const result = {};
+      const cols = this.table[Table.Symbol.Columns];
+      for (const colKey of Object.keys(entry)) {
+        const colValue = entry[colKey];
+        result[colKey] = is(colValue, SQL) ? colValue : new Param(colValue, cols[colKey]);
+      }
+      return result;
+    });
+    return new SQLiteInsertBase(this.table, mappedValues, this.session, this.dialect, this.withList);
+  }
+};
+var SQLiteInsertBase = class extends QueryPromise {
+  static {
+    __name(this, "SQLiteInsertBase");
+  }
+  constructor(table, values, session, dialect, withList) {
+    super();
+    this.session = session;
+    this.dialect = dialect;
+    this.config = { table, values, withList };
+  }
+  static [entityKind] = "SQLiteInsert";
+  /** @internal */
+  config;
+  returning(fields = this.config.table[SQLiteTable.Symbol.Columns]) {
+    this.config.returning = orderSelectedFields(fields);
+    return this;
+  }
+  /**
+   * Adds an `on conflict do nothing` clause to the query.
+   *
+   * Calling this method simply avoids inserting a row as its alternative action.
+   *
+   * See docs: {@link https://orm.drizzle.team/docs/insert#on-conflict-do-nothing}
+   *
+   * @param config The `target` and `where` clauses.
+   *
+   * @example
+   * ```ts
+   * // Insert one row and cancel the insert if there's a conflict
+   * await db.insert(cars)
+   *   .values({ id: 1, brand: 'BMW' })
+   *   .onConflictDoNothing();
+   *
+   * // Explicitly specify conflict target
+   * await db.insert(cars)
+   *   .values({ id: 1, brand: 'BMW' })
+   *   .onConflictDoNothing({ target: cars.id });
+   * ```
+   */
+  onConflictDoNothing(config = {}) {
+    if (config.target === void 0) {
+      this.config.onConflict = sql`do nothing`;
+    } else {
+      const targetSql = Array.isArray(config.target) ? sql`${config.target}` : sql`${[config.target]}`;
+      const whereSql = config.where ? sql` where ${config.where}` : sql``;
+      this.config.onConflict = sql`${targetSql} do nothing${whereSql}`;
+    }
+    return this;
+  }
+  /**
+   * Adds an `on conflict do update` clause to the query.
+   *
+   * Calling this method will update the existing row that conflicts with the row proposed for insertion as its alternative action.
+   *
+   * See docs: {@link https://orm.drizzle.team/docs/insert#upserts-and-conflicts}
+   *
+   * @param config The `target`, `set` and `where` clauses.
+   *
+   * @example
+   * ```ts
+   * // Update the row if there's a conflict
+   * await db.insert(cars)
+   *   .values({ id: 1, brand: 'BMW' })
+   *   .onConflictDoUpdate({
+   *     target: cars.id,
+   *     set: { brand: 'Porsche' }
+   *   });
+   *
+   * // Upsert with 'where' clause
+   * await db.insert(cars)
+   *   .values({ id: 1, brand: 'BMW' })
+   *   .onConflictDoUpdate({
+   *     target: cars.id,
+   *     set: { brand: 'newBMW' },
+   *     where: sql`${cars.createdAt} > '2023-01-01'::date`,
+   *   });
+   * ```
+   */
+  onConflictDoUpdate(config) {
+    const targetSql = Array.isArray(config.target) ? sql`${config.target}` : sql`${[config.target]}`;
+    const whereSql = config.where ? sql` where ${config.where}` : sql``;
+    const setSql = this.dialect.buildUpdateSet(this.config.table, mapUpdateSet(this.config.table, config.set));
+    this.config.onConflict = sql`${targetSql} do update set ${setSql}${whereSql}`;
+    return this;
+  }
+  /** @internal */
+  getSQL() {
+    return this.dialect.buildInsertQuery(this.config);
+  }
+  toSQL() {
+    const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
+    return rest;
+  }
+  /** @internal */
+  _prepare(isOneTimeQuery = true) {
+    return this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
+      this.dialect.sqlToQuery(this.getSQL()),
+      this.config.returning,
+      this.config.returning ? "all" : "run"
+    );
+  }
+  prepare() {
+    return this._prepare(false);
+  }
+  run = /* @__PURE__ */ __name((placeholderValues) => {
+    return this._prepare().run(placeholderValues);
+  }, "run");
+  all = /* @__PURE__ */ __name((placeholderValues) => {
+    return this._prepare().all(placeholderValues);
+  }, "all");
+  get = /* @__PURE__ */ __name((placeholderValues) => {
+    return this._prepare().get(placeholderValues);
+  }, "get");
+  values = /* @__PURE__ */ __name((placeholderValues) => {
+    return this._prepare().values(placeholderValues);
+  }, "values");
+  async execute() {
+    return this.config.returning ? this.all() : this.run();
+  }
+  $dynamic() {
+    return this;
+  }
+};
+
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/errors.js
+var DrizzleError = class extends Error {
+  static {
+    __name(this, "DrizzleError");
+  }
+  static [entityKind] = "DrizzleError";
+  constructor({ message, cause }) {
+    super(message);
+    this.name = "DrizzleError";
+    this.cause = cause;
+  }
+};
+var TransactionRollbackError = class extends DrizzleError {
+  static {
+    __name(this, "TransactionRollbackError");
+  }
+  static [entityKind] = "TransactionRollbackError";
+  constructor() {
+    super({ message: "Rollback" });
+  }
+};
+
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/column-builder.js
+var ColumnBuilder = class {
+  static {
+    __name(this, "ColumnBuilder");
+  }
+  static [entityKind] = "ColumnBuilder";
+  config;
+  constructor(name, dataType, columnType) {
+    this.config = {
+      name,
+      notNull: false,
+      default: void 0,
+      hasDefault: false,
+      primaryKey: false,
+      isUnique: false,
+      uniqueName: void 0,
+      uniqueType: void 0,
+      dataType,
+      columnType
+    };
+  }
+  /**
+   * Changes the data type of the column. Commonly used with `json` columns. Also, useful for branded types.
+   *
+   * @example
+   * ```ts
+   * const users = pgTable('users', {
+   * 	id: integer('id').$type<UserId>().primaryKey(),
+   * 	details: json('details').$type<UserDetails>().notNull(),
+   * });
+   * ```
+   */
+  $type() {
+    return this;
+  }
+  /**
+   * Adds a `not null` clause to the column definition.
+   *
+   * Affects the `select` model of the table - columns *without* `not null` will be nullable on select.
+   */
+  notNull() {
+    this.config.notNull = true;
+    return this;
+  }
+  /**
+   * Adds a `default <value>` clause to the column definition.
+   *
+   * Affects the `insert` model of the table - columns *with* `default` are optional on insert.
+   *
+   * If you need to set a dynamic default value, use {@link $defaultFn} instead.
+   */
+  default(value) {
+    this.config.default = value;
+    this.config.hasDefault = true;
+    return this;
+  }
+  /**
+   * Adds a dynamic default value to the column.
+   * The function will be called when the row is inserted, and the returned value will be used as the column value.
+   *
+   * **Note:** This value does not affect the `drizzle-kit` behavior, it is only used at runtime in `drizzle-orm`.
+   */
+  $defaultFn(fn) {
+    this.config.defaultFn = fn;
+    this.config.hasDefault = true;
+    return this;
+  }
+  /**
+   * Alias for {@link $defaultFn}.
+   */
+  $default = this.$defaultFn;
+  /**
+   * Adds a `primary key` clause to the column definition. This implicitly makes the column `not null`.
+   *
+   * In SQLite, `integer primary key` implicitly makes the column auto-incrementing.
+   */
+  primaryKey() {
+    this.config.primaryKey = true;
+    this.config.notNull = true;
+    return this;
+  }
+};
+
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/foreign-keys.js
+var ForeignKeyBuilder = class {
   static {
     __name(this, "ForeignKeyBuilder");
   }
@@ -4244,10 +3969,10 @@ var ForeignKeyBuilder2 = class {
   }
   /** @internal */
   build(table) {
-    return new ForeignKey2(table, this);
+    return new ForeignKey(table, this);
   }
 };
-var ForeignKey2 = class {
+var ForeignKey = class {
   static {
     __name(this, "ForeignKey");
   }
@@ -4266,21 +3991,21 @@ var ForeignKey2 = class {
     const columnNames = columns.map((column) => column.name);
     const foreignColumnNames = foreignColumns.map((column) => column.name);
     const chunks = [
-      this.table[TableName],
+      this.table[SQLiteTable.Symbol.Name],
       ...columnNames,
-      foreignColumns[0].table[TableName],
+      foreignColumns[0].table[SQLiteTable.Symbol.Name],
       ...foreignColumnNames
     ];
     return name ?? `${chunks.join("_")}_fk`;
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/unique-constraint.js
-function uniqueKeyName2(table, columns) {
-  return `${table[TableName]}_${columns.join("_")}_unique`;
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/unique-constraint.js
+function uniqueKeyName(table, columns) {
+  return `${table[SQLiteTable.Symbol.Name]}_${columns.join("_")}_unique`;
 }
-__name(uniqueKeyName2, "uniqueKeyName");
-var UniqueConstraintBuilder2 = class {
+__name(uniqueKeyName, "uniqueKeyName");
+var UniqueConstraintBuilder = class {
   static {
     __name(this, "UniqueConstraintBuilder");
   }
@@ -4293,10 +4018,10 @@ var UniqueConstraintBuilder2 = class {
   columns;
   /** @internal */
   build(table) {
-    return new UniqueConstraint2(table, this.columns, this.name);
+    return new UniqueConstraint(table, this.columns, this.name);
   }
 };
-var UniqueOnConstraintBuilder2 = class {
+var UniqueOnConstraintBuilder = class {
   static {
     __name(this, "UniqueOnConstraintBuilder");
   }
@@ -4307,17 +4032,17 @@ var UniqueOnConstraintBuilder2 = class {
     this.name = name;
   }
   on(...columns) {
-    return new UniqueConstraintBuilder2(columns, this.name);
+    return new UniqueConstraintBuilder(columns, this.name);
   }
 };
-var UniqueConstraint2 = class {
+var UniqueConstraint = class {
   static {
     __name(this, "UniqueConstraint");
   }
   constructor(table, columns, name) {
     this.table = table;
     this.columns = columns;
-    this.name = name ?? uniqueKeyName2(this.table, this.columns.map((column) => column.name));
+    this.name = name ?? uniqueKeyName(this.table, this.columns.map((column) => column.name));
   }
   static [entityKind] = "SQLiteUniqueConstraint";
   columns;
@@ -4327,7 +4052,7 @@ var UniqueConstraint2 = class {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/columns/common.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/columns/common.js
 var SQLiteColumnBuilder = class extends ColumnBuilder {
   static {
     __name(this, "SQLiteColumnBuilder");
@@ -4343,19 +4068,11 @@ var SQLiteColumnBuilder = class extends ColumnBuilder {
     this.config.uniqueName = name;
     return this;
   }
-  generatedAlwaysAs(as, config) {
-    this.config.generated = {
-      as,
-      type: "always",
-      mode: config?.mode ?? "virtual"
-    };
-    return this;
-  }
   /** @internal */
   buildForeignKeys(column, table) {
     return this.foreignKeyConfigs.map(({ ref, actions }) => {
       return ((ref2, actions2) => {
-        const builder = new ForeignKeyBuilder2(() => {
+        const builder = new ForeignKeyBuilder(() => {
           const foreignColumn = ref2();
           return { columns: [column], foreignColumns: [foreignColumn] };
         });
@@ -4376,7 +4093,7 @@ var SQLiteColumn = class extends Column {
   }
   constructor(table, config) {
     if (!config.uniqueName) {
-      config.uniqueName = uniqueKeyName2(table, [config.name]);
+      config.uniqueName = uniqueKeyName(table, [config.name]);
     }
     super(table, config);
     this.table = table;
@@ -4384,170 +4101,7 @@ var SQLiteColumn = class extends Column {
   static [entityKind] = "SQLiteColumn";
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/columns/blob.js
-var SQLiteBigIntBuilder = class extends SQLiteColumnBuilder {
-  static {
-    __name(this, "SQLiteBigIntBuilder");
-  }
-  static [entityKind] = "SQLiteBigIntBuilder";
-  constructor(name) {
-    super(name, "bigint", "SQLiteBigInt");
-  }
-  /** @internal */
-  build(table) {
-    return new SQLiteBigInt(table, this.config);
-  }
-};
-var SQLiteBigInt = class extends SQLiteColumn {
-  static {
-    __name(this, "SQLiteBigInt");
-  }
-  static [entityKind] = "SQLiteBigInt";
-  getSQLType() {
-    return "blob";
-  }
-  mapFromDriverValue(value) {
-    if (typeof Buffer !== "undefined" && Buffer.from) {
-      const buf = Buffer.isBuffer(value) ? value : value instanceof ArrayBuffer ? Buffer.from(value) : value.buffer ? Buffer.from(value.buffer, value.byteOffset, value.byteLength) : Buffer.from(value);
-      return BigInt(buf.toString("utf8"));
-    }
-    return BigInt(textDecoder.decode(value));
-  }
-  mapToDriverValue(value) {
-    return Buffer.from(value.toString());
-  }
-};
-var SQLiteBlobJsonBuilder = class extends SQLiteColumnBuilder {
-  static {
-    __name(this, "SQLiteBlobJsonBuilder");
-  }
-  static [entityKind] = "SQLiteBlobJsonBuilder";
-  constructor(name) {
-    super(name, "json", "SQLiteBlobJson");
-  }
-  /** @internal */
-  build(table) {
-    return new SQLiteBlobJson(
-      table,
-      this.config
-    );
-  }
-};
-var SQLiteBlobJson = class extends SQLiteColumn {
-  static {
-    __name(this, "SQLiteBlobJson");
-  }
-  static [entityKind] = "SQLiteBlobJson";
-  getSQLType() {
-    return "blob";
-  }
-  mapFromDriverValue(value) {
-    if (typeof Buffer !== "undefined" && Buffer.from) {
-      const buf = Buffer.isBuffer(value) ? value : value instanceof ArrayBuffer ? Buffer.from(value) : value.buffer ? Buffer.from(value.buffer, value.byteOffset, value.byteLength) : Buffer.from(value);
-      return JSON.parse(buf.toString("utf8"));
-    }
-    return JSON.parse(textDecoder.decode(value));
-  }
-  mapToDriverValue(value) {
-    return Buffer.from(JSON.stringify(value));
-  }
-};
-var SQLiteBlobBufferBuilder = class extends SQLiteColumnBuilder {
-  static {
-    __name(this, "SQLiteBlobBufferBuilder");
-  }
-  static [entityKind] = "SQLiteBlobBufferBuilder";
-  constructor(name) {
-    super(name, "buffer", "SQLiteBlobBuffer");
-  }
-  /** @internal */
-  build(table) {
-    return new SQLiteBlobBuffer(table, this.config);
-  }
-};
-var SQLiteBlobBuffer = class extends SQLiteColumn {
-  static {
-    __name(this, "SQLiteBlobBuffer");
-  }
-  static [entityKind] = "SQLiteBlobBuffer";
-  mapFromDriverValue(value) {
-    if (Buffer.isBuffer(value)) {
-      return value;
-    }
-    return Buffer.from(value);
-  }
-  getSQLType() {
-    return "blob";
-  }
-};
-function blob(a, b) {
-  const { name, config } = getColumnNameAndConfig(a, b);
-  if (config?.mode === "json") {
-    return new SQLiteBlobJsonBuilder(name);
-  }
-  if (config?.mode === "bigint") {
-    return new SQLiteBigIntBuilder(name);
-  }
-  return new SQLiteBlobBufferBuilder(name);
-}
-__name(blob, "blob");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/columns/custom.js
-var SQLiteCustomColumnBuilder = class extends SQLiteColumnBuilder {
-  static {
-    __name(this, "SQLiteCustomColumnBuilder");
-  }
-  static [entityKind] = "SQLiteCustomColumnBuilder";
-  constructor(name, fieldConfig, customTypeParams) {
-    super(name, "custom", "SQLiteCustomColumn");
-    this.config.fieldConfig = fieldConfig;
-    this.config.customTypeParams = customTypeParams;
-  }
-  /** @internal */
-  build(table) {
-    return new SQLiteCustomColumn(
-      table,
-      this.config
-    );
-  }
-};
-var SQLiteCustomColumn = class extends SQLiteColumn {
-  static {
-    __name(this, "SQLiteCustomColumn");
-  }
-  static [entityKind] = "SQLiteCustomColumn";
-  sqlName;
-  mapTo;
-  mapFrom;
-  constructor(table, config) {
-    super(table, config);
-    this.sqlName = config.customTypeParams.dataType(config.fieldConfig);
-    this.mapTo = config.customTypeParams.toDriver;
-    this.mapFrom = config.customTypeParams.fromDriver;
-  }
-  getSQLType() {
-    return this.sqlName;
-  }
-  mapFromDriverValue(value) {
-    return typeof this.mapFrom === "function" ? this.mapFrom(value) : value;
-  }
-  mapToDriverValue(value) {
-    return typeof this.mapTo === "function" ? this.mapTo(value) : value;
-  }
-};
-function customType(customTypeParams) {
-  return (a, b) => {
-    const { name, config } = getColumnNameAndConfig(a, b);
-    return new SQLiteCustomColumnBuilder(
-      name,
-      config,
-      customTypeParams
-    );
-  };
-}
-__name(customType, "customType");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/columns/integer.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/columns/integer.js
 var SQLiteBaseIntegerBuilder = class extends SQLiteColumnBuilder {
   static {
     __name(this, "SQLiteBaseIntegerBuilder");
@@ -4669,8 +4223,7 @@ var SQLiteBoolean = class extends SQLiteBaseInteger {
     return value ? 1 : 0;
   }
 };
-function integer(a, b) {
-  const { name, config } = getColumnNameAndConfig(a, b);
+function integer(name, config) {
   if (config?.mode === "timestamp" || config?.mode === "timestamp_ms") {
     return new SQLiteTimestampBuilder(name, config.mode);
   }
@@ -4681,129 +4234,7 @@ function integer(a, b) {
 }
 __name(integer, "integer");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/columns/numeric.js
-var SQLiteNumericBuilder = class extends SQLiteColumnBuilder {
-  static {
-    __name(this, "SQLiteNumericBuilder");
-  }
-  static [entityKind] = "SQLiteNumericBuilder";
-  constructor(name) {
-    super(name, "string", "SQLiteNumeric");
-  }
-  /** @internal */
-  build(table) {
-    return new SQLiteNumeric(
-      table,
-      this.config
-    );
-  }
-};
-var SQLiteNumeric = class extends SQLiteColumn {
-  static {
-    __name(this, "SQLiteNumeric");
-  }
-  static [entityKind] = "SQLiteNumeric";
-  mapFromDriverValue(value) {
-    if (typeof value === "string") return value;
-    return String(value);
-  }
-  getSQLType() {
-    return "numeric";
-  }
-};
-var SQLiteNumericNumberBuilder = class extends SQLiteColumnBuilder {
-  static {
-    __name(this, "SQLiteNumericNumberBuilder");
-  }
-  static [entityKind] = "SQLiteNumericNumberBuilder";
-  constructor(name) {
-    super(name, "number", "SQLiteNumericNumber");
-  }
-  /** @internal */
-  build(table) {
-    return new SQLiteNumericNumber(
-      table,
-      this.config
-    );
-  }
-};
-var SQLiteNumericNumber = class extends SQLiteColumn {
-  static {
-    __name(this, "SQLiteNumericNumber");
-  }
-  static [entityKind] = "SQLiteNumericNumber";
-  mapFromDriverValue(value) {
-    if (typeof value === "number") return value;
-    return Number(value);
-  }
-  mapToDriverValue = String;
-  getSQLType() {
-    return "numeric";
-  }
-};
-var SQLiteNumericBigIntBuilder = class extends SQLiteColumnBuilder {
-  static {
-    __name(this, "SQLiteNumericBigIntBuilder");
-  }
-  static [entityKind] = "SQLiteNumericBigIntBuilder";
-  constructor(name) {
-    super(name, "bigint", "SQLiteNumericBigInt");
-  }
-  /** @internal */
-  build(table) {
-    return new SQLiteNumericBigInt(
-      table,
-      this.config
-    );
-  }
-};
-var SQLiteNumericBigInt = class extends SQLiteColumn {
-  static {
-    __name(this, "SQLiteNumericBigInt");
-  }
-  static [entityKind] = "SQLiteNumericBigInt";
-  mapFromDriverValue = BigInt;
-  mapToDriverValue = String;
-  getSQLType() {
-    return "numeric";
-  }
-};
-function numeric(a, b) {
-  const { name, config } = getColumnNameAndConfig(a, b);
-  const mode = config?.mode;
-  return mode === "number" ? new SQLiteNumericNumberBuilder(name) : mode === "bigint" ? new SQLiteNumericBigIntBuilder(name) : new SQLiteNumericBuilder(name);
-}
-__name(numeric, "numeric");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/columns/real.js
-var SQLiteRealBuilder = class extends SQLiteColumnBuilder {
-  static {
-    __name(this, "SQLiteRealBuilder");
-  }
-  static [entityKind] = "SQLiteRealBuilder";
-  constructor(name) {
-    super(name, "number", "SQLiteReal");
-  }
-  /** @internal */
-  build(table) {
-    return new SQLiteReal(table, this.config);
-  }
-};
-var SQLiteReal = class extends SQLiteColumn {
-  static {
-    __name(this, "SQLiteReal");
-  }
-  static [entityKind] = "SQLiteReal";
-  getSQLType() {
-    return "real";
-  }
-};
-function real(name) {
-  return new SQLiteRealBuilder(name ?? "");
-}
-__name(real, "real");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/columns/text.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/columns/text.js
 var SQLiteTextBuilder = class extends SQLiteColumnBuilder {
   static {
     __name(this, "SQLiteTextBuilder");
@@ -4816,10 +4247,7 @@ var SQLiteTextBuilder = class extends SQLiteColumnBuilder {
   }
   /** @internal */
   build(table) {
-    return new SQLiteText(
-      table,
-      this.config
-    );
+    return new SQLiteText(table, this.config);
   }
 };
 var SQLiteText = class extends SQLiteColumn {
@@ -4867,341 +4295,12 @@ var SQLiteTextJson = class extends SQLiteColumn {
     return JSON.stringify(value);
   }
 };
-function text(a, b = {}) {
-  const { name, config } = getColumnNameAndConfig(a, b);
-  if (config.mode === "json") {
-    return new SQLiteTextJsonBuilder(name);
-  }
-  return new SQLiteTextBuilder(name, config);
+function text(name, config = {}) {
+  return config.mode === "json" ? new SQLiteTextJsonBuilder(name) : new SQLiteTextBuilder(name, config);
 }
 __name(text, "text");
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/columns/all.js
-function getSQLiteColumnBuilders() {
-  return {
-    blob,
-    customType,
-    integer,
-    numeric,
-    real,
-    text
-  };
-}
-__name(getSQLiteColumnBuilders, "getSQLiteColumnBuilders");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/table.js
-var InlineForeignKeys2 = /* @__PURE__ */ Symbol.for("drizzle:SQLiteInlineForeignKeys");
-var SQLiteTable = class extends Table {
-  static {
-    __name(this, "SQLiteTable");
-  }
-  static [entityKind] = "SQLiteTable";
-  /** @internal */
-  static Symbol = Object.assign({}, Table.Symbol, {
-    InlineForeignKeys: InlineForeignKeys2
-  });
-  /** @internal */
-  [Table.Symbol.Columns];
-  /** @internal */
-  [InlineForeignKeys2] = [];
-  /** @internal */
-  [Table.Symbol.ExtraConfigBuilder] = void 0;
-};
-function sqliteTableBase(name, columns, extraConfig, schema, baseName = name) {
-  const rawTable = new SQLiteTable(name, schema, baseName);
-  const parsedColumns = typeof columns === "function" ? columns(getSQLiteColumnBuilders()) : columns;
-  const builtColumns = Object.fromEntries(
-    Object.entries(parsedColumns).map(([name2, colBuilderBase]) => {
-      const colBuilder = colBuilderBase;
-      colBuilder.setName(name2);
-      const column = colBuilder.build(rawTable);
-      rawTable[InlineForeignKeys2].push(...colBuilder.buildForeignKeys(column, rawTable));
-      return [name2, column];
-    })
-  );
-  const table = Object.assign(rawTable, builtColumns);
-  table[Table.Symbol.Columns] = builtColumns;
-  table[Table.Symbol.ExtraConfigColumns] = builtColumns;
-  if (extraConfig) {
-    table[SQLiteTable.Symbol.ExtraConfigBuilder] = extraConfig;
-  }
-  return table;
-}
-__name(sqliteTableBase, "sqliteTableBase");
-var sqliteTable = /* @__PURE__ */ __name((name, columns, extraConfig) => {
-  return sqliteTableBase(name, columns, extraConfig);
-}, "sqliteTable");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/primary-keys.js
-function primaryKey(...config) {
-  if (config[0].columns) {
-    return new PrimaryKeyBuilder2(config[0].columns, config[0].name);
-  }
-  return new PrimaryKeyBuilder2(config);
-}
-__name(primaryKey, "primaryKey");
-var PrimaryKeyBuilder2 = class {
-  static {
-    __name(this, "PrimaryKeyBuilder");
-  }
-  static [entityKind] = "SQLitePrimaryKeyBuilder";
-  /** @internal */
-  columns;
-  /** @internal */
-  name;
-  constructor(columns, name) {
-    this.columns = columns;
-    this.name = name;
-  }
-  /** @internal */
-  build(table) {
-    return new PrimaryKey2(table, this.columns, this.name);
-  }
-};
-var PrimaryKey2 = class {
-  static {
-    __name(this, "PrimaryKey");
-  }
-  constructor(table, columns, name) {
-    this.table = table;
-    this.columns = columns;
-    this.name = name;
-  }
-  static [entityKind] = "SQLitePrimaryKey";
-  columns;
-  name;
-  getName() {
-    return this.name ?? `${this.table[SQLiteTable.Symbol.Name]}_${this.columns.map((column) => column.name).join("_")}_pk`;
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/utils.js
-function extractUsedTable(table) {
-  if (is(table, SQLiteTable)) {
-    return [`${table[Table.Symbol.BaseName]}`];
-  }
-  if (is(table, Subquery)) {
-    return table._.usedTables ?? [];
-  }
-  if (is(table, SQL)) {
-    return table.usedTables ?? [];
-  }
-  return [];
-}
-__name(extractUsedTable, "extractUsedTable");
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/query-builders/delete.js
-var SQLiteDeleteBase = class extends QueryPromise {
-  static {
-    __name(this, "SQLiteDeleteBase");
-  }
-  constructor(table, session, dialect, withList) {
-    super();
-    this.table = table;
-    this.session = session;
-    this.dialect = dialect;
-    this.config = { table, withList };
-  }
-  static [entityKind] = "SQLiteDelete";
-  /** @internal */
-  config;
-  /**
-   * Adds a `where` clause to the query.
-   *
-   * Calling this method will delete only those rows that fulfill a specified condition.
-   *
-   * See docs: {@link https://orm.drizzle.team/docs/delete}
-   *
-   * @param where the `where` clause.
-   *
-   * @example
-   * You can use conditional operators and `sql function` to filter the rows to be deleted.
-   *
-   * ```ts
-   * // Delete all cars with green color
-   * db.delete(cars).where(eq(cars.color, 'green'));
-   * // or
-   * db.delete(cars).where(sql`${cars.color} = 'green'`)
-   * ```
-   *
-   * You can logically combine conditional operators with `and()` and `or()` operators:
-   *
-   * ```ts
-   * // Delete all BMW cars with a green color
-   * db.delete(cars).where(and(eq(cars.color, 'green'), eq(cars.brand, 'BMW')));
-   *
-   * // Delete all cars with the green or blue color
-   * db.delete(cars).where(or(eq(cars.color, 'green'), eq(cars.color, 'blue')));
-   * ```
-   */
-  where(where) {
-    this.config.where = where;
-    return this;
-  }
-  orderBy(...columns) {
-    if (typeof columns[0] === "function") {
-      const orderBy = columns[0](
-        new Proxy(
-          this.config.table[Table.Symbol.Columns],
-          new SelectionProxyHandler({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
-        )
-      );
-      const orderByArray = Array.isArray(orderBy) ? orderBy : [orderBy];
-      this.config.orderBy = orderByArray;
-    } else {
-      const orderByArray = columns;
-      this.config.orderBy = orderByArray;
-    }
-    return this;
-  }
-  limit(limit) {
-    this.config.limit = limit;
-    return this;
-  }
-  returning(fields = this.table[SQLiteTable.Symbol.Columns]) {
-    this.config.returning = orderSelectedFields(fields);
-    return this;
-  }
-  /** @internal */
-  getSQL() {
-    return this.dialect.buildDeleteQuery(this.config);
-  }
-  toSQL() {
-    const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
-    return rest;
-  }
-  /** @internal */
-  _prepare(isOneTimeQuery = true) {
-    return this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
-      this.dialect.sqlToQuery(this.getSQL()),
-      this.config.returning,
-      this.config.returning ? "all" : "run",
-      true,
-      void 0,
-      {
-        type: "delete",
-        tables: extractUsedTable(this.config.table)
-      }
-    );
-  }
-  prepare() {
-    return this._prepare(false);
-  }
-  run = /* @__PURE__ */ __name((placeholderValues) => {
-    return this._prepare().run(placeholderValues);
-  }, "run");
-  all = /* @__PURE__ */ __name((placeholderValues) => {
-    return this._prepare().all(placeholderValues);
-  }, "all");
-  get = /* @__PURE__ */ __name((placeholderValues) => {
-    return this._prepare().get(placeholderValues);
-  }, "get");
-  values = /* @__PURE__ */ __name((placeholderValues) => {
-    return this._prepare().values(placeholderValues);
-  }, "values");
-  async execute(placeholderValues) {
-    return this._prepare().execute(placeholderValues);
-  }
-  $dynamic() {
-    return this;
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/casing.js
-function toSnakeCase(input) {
-  const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
-  return words.map((word) => word.toLowerCase()).join("_");
-}
-__name(toSnakeCase, "toSnakeCase");
-function toCamelCase(input) {
-  const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
-  return words.reduce((acc, word, i) => {
-    const formattedWord = i === 0 ? word.toLowerCase() : `${word[0].toUpperCase()}${word.slice(1)}`;
-    return acc + formattedWord;
-  }, "");
-}
-__name(toCamelCase, "toCamelCase");
-function noopCase(input) {
-  return input;
-}
-__name(noopCase, "noopCase");
-var CasingCache = class {
-  static {
-    __name(this, "CasingCache");
-  }
-  static [entityKind] = "CasingCache";
-  /** @internal */
-  cache = {};
-  cachedTables = {};
-  convert;
-  constructor(casing) {
-    this.convert = casing === "snake_case" ? toSnakeCase : casing === "camelCase" ? toCamelCase : noopCase;
-  }
-  getColumnCasing(column) {
-    if (!column.keyAsName) return column.name;
-    const schema = column.table[Table.Symbol.Schema] ?? "public";
-    const tableName = column.table[Table.Symbol.OriginalName];
-    const key = `${schema}.${tableName}.${column.name}`;
-    if (!this.cache[key]) {
-      this.cacheTable(column.table);
-    }
-    return this.cache[key];
-  }
-  cacheTable(table) {
-    const schema = table[Table.Symbol.Schema] ?? "public";
-    const tableName = table[Table.Symbol.OriginalName];
-    const tableKey = `${schema}.${tableName}`;
-    if (!this.cachedTables[tableKey]) {
-      for (const column of Object.values(table[Table.Symbol.Columns])) {
-        const columnKey = `${tableKey}.${column.name}`;
-        this.cache[columnKey] = this.convert(column.name);
-      }
-      this.cachedTables[tableKey] = true;
-    }
-  }
-  clearCache() {
-    this.cache = {};
-    this.cachedTables = {};
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/errors.js
-var DrizzleError = class extends Error {
-  static {
-    __name(this, "DrizzleError");
-  }
-  static [entityKind] = "DrizzleError";
-  constructor({ message, cause }) {
-    super(message);
-    this.name = "DrizzleError";
-    this.cause = cause;
-  }
-};
-var DrizzleQueryError = class _DrizzleQueryError extends Error {
-  static {
-    __name(this, "DrizzleQueryError");
-  }
-  constructor(query, params, cause) {
-    super(`Failed query: ${query}
-params: ${params}`);
-    this.query = query;
-    this.params = params;
-    this.cause = cause;
-    Error.captureStackTrace(this, _DrizzleQueryError);
-    if (cause) this.cause = cause;
-  }
-};
-var TransactionRollbackError = class extends DrizzleError {
-  static {
-    __name(this, "TransactionRollbackError");
-  }
-  static [entityKind] = "TransactionRollbackError";
-  constructor() {
-    super({ message: "Rollback" });
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/view-base.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/view-base.js
 var SQLiteViewBase = class extends View {
   static {
     __name(this, "SQLiteViewBase");
@@ -5209,17 +4308,12 @@ var SQLiteViewBase = class extends View {
   static [entityKind] = "SQLiteViewBase";
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/dialect.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/dialect.js
 var SQLiteDialect = class {
   static {
     __name(this, "SQLiteDialect");
   }
   static [entityKind] = "SQLiteDialect";
-  /** @internal */
-  casing;
-  constructor(config) {
-    this.casing = new CasingCache(config?.casing);
-  }
   escapeName(name) {
     return `"${name}"`;
   }
@@ -5230,10 +4324,11 @@ var SQLiteDialect = class {
     return `'${str.replace(/'/g, "''")}'`;
   }
   buildWithCTE(queries) {
-    if (!queries?.length) return void 0;
+    if (!queries?.length)
+      return void 0;
     const withSqlChunks = [sql`with `];
     for (const [i, w] of queries.entries()) {
-      withSqlChunks.push(sql`${sql.identifier(w._.alias)} as (${w._.sql})`);
+      withSqlChunks.push(sql`${sql.identifier(w[SubqueryConfig].alias)} as (${w[SubqueryConfig].sql})`);
       if (i < queries.length - 1) {
         withSqlChunks.push(sql`, `);
       }
@@ -5241,41 +4336,32 @@ var SQLiteDialect = class {
     withSqlChunks.push(sql` `);
     return sql.join(withSqlChunks);
   }
-  buildDeleteQuery({ table, where, returning, withList, limit, orderBy }) {
+  buildDeleteQuery({ table, where, returning, withList }) {
     const withSql = this.buildWithCTE(withList);
     const returningSql = returning ? sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
     const whereSql = where ? sql` where ${where}` : void 0;
-    const orderBySql = this.buildOrderBy(orderBy);
-    const limitSql = this.buildLimit(limit);
-    return sql`${withSql}delete from ${table}${whereSql}${returningSql}${orderBySql}${limitSql}`;
+    return sql`${withSql}delete from ${table}${whereSql}${returningSql}`;
   }
   buildUpdateSet(table, set) {
-    const tableColumns = table[Table.Symbol.Columns];
-    const columnNames = Object.keys(tableColumns).filter(
-      (colName) => set[colName] !== void 0 || tableColumns[colName]?.onUpdateFn !== void 0
+    const setEntries = Object.entries(set);
+    const setSize = setEntries.length;
+    return sql.join(
+      setEntries.flatMap(([colName, value], i) => {
+        const col = table[Table.Symbol.Columns][colName];
+        const res = sql`${sql.identifier(col.name)} = ${value}`;
+        if (i < setSize - 1) {
+          return [res, sql.raw(", ")];
+        }
+        return [res];
+      })
     );
-    const setSize = columnNames.length;
-    return sql.join(columnNames.flatMap((colName, i) => {
-      const col = tableColumns[colName];
-      const onUpdateFnResult = col.onUpdateFn?.();
-      const value = set[colName] ?? (is(onUpdateFnResult, SQL) ? onUpdateFnResult : sql.param(onUpdateFnResult, col));
-      const res = sql`${sql.identifier(this.casing.getColumnCasing(col))} = ${value}`;
-      if (i < setSize - 1) {
-        return [res, sql.raw(", ")];
-      }
-      return [res];
-    }));
   }
-  buildUpdateQuery({ table, set, where, returning, withList, joins, from, limit, orderBy }) {
+  buildUpdateQuery({ table, set, where, returning, withList }) {
     const withSql = this.buildWithCTE(withList);
     const setSql = this.buildUpdateSet(table, set);
-    const fromSql = from && sql.join([sql.raw(" from "), this.buildFromTable(from)]);
-    const joinsSql = this.buildJoins(joins);
     const returningSql = returning ? sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
     const whereSql = where ? sql` where ${where}` : void 0;
-    const orderBySql = this.buildOrderBy(orderBy);
-    const limitSql = this.buildLimit(limit);
-    return sql`${withSql}update ${table} set ${setSql}${fromSql}${joinsSql}${whereSql}${returningSql}${orderBySql}${limitSql}`;
+    return sql`${withSql}update ${table} set ${setSql}${whereSql}${returningSql}`;
   }
   /**
    * Builds selection SQL with provided fields/expressions
@@ -5301,7 +4387,7 @@ var SQLiteDialect = class {
             new SQL(
               query.queryChunks.map((c) => {
                 if (is(c, Column)) {
-                  return sql.identifier(this.casing.getColumnCasing(c));
+                  return sql.identifier(c.name);
                 }
                 return c;
               })
@@ -5315,29 +4401,12 @@ var SQLiteDialect = class {
         }
       } else if (is(field, Column)) {
         const tableName = field.table[Table.Symbol.Name];
-        if (field.columnType === "SQLiteNumericBigInt") {
-          if (isSingleTable) {
-            chunk.push(sql`cast(${sql.identifier(this.casing.getColumnCasing(field))} as text)`);
-          } else {
-            chunk.push(
-              sql`cast(${sql.identifier(tableName)}.${sql.identifier(this.casing.getColumnCasing(field))} as text)`
-            );
-          }
+        const columnName = field.name;
+        if (isSingleTable) {
+          chunk.push(sql.identifier(columnName));
         } else {
-          if (isSingleTable) {
-            chunk.push(sql.identifier(this.casing.getColumnCasing(field)));
-          } else {
-            chunk.push(sql`${sql.identifier(tableName)}.${sql.identifier(this.casing.getColumnCasing(field))}`);
-          }
+          chunk.push(sql`${sql.identifier(tableName)}.${sql.identifier(columnName)}`);
         }
-      } else if (is(field, Subquery)) {
-        const entries = Object.entries(field._.selectedFields);
-        if (entries.length === 1) {
-          const entry = entries[0][1];
-          const fieldDecoder = is(entry, SQL) ? entry.decoder : is(entry, Column) ? { mapFromDriverValue: /* @__PURE__ */ __name((v) => entry.mapFromDriverValue(v), "mapFromDriverValue") } : entry.sql.decoder;
-          if (fieldDecoder) field._.sql.decoder = fieldDecoder;
-        }
-        chunk.push(field);
       }
       if (i < columnsLen - 1) {
         chunk.push(sql`, `);
@@ -5345,59 +4414,6 @@ var SQLiteDialect = class {
       return chunk;
     });
     return sql.join(chunks);
-  }
-  buildJoins(joins) {
-    if (!joins || joins.length === 0) {
-      return void 0;
-    }
-    const joinsArray = [];
-    if (joins) {
-      for (const [index, joinMeta] of joins.entries()) {
-        if (index === 0) {
-          joinsArray.push(sql` `);
-        }
-        const table = joinMeta.table;
-        const onSql = joinMeta.on ? sql` on ${joinMeta.on}` : void 0;
-        if (is(table, SQLiteTable)) {
-          const tableName = table[SQLiteTable.Symbol.Name];
-          const tableSchema = table[SQLiteTable.Symbol.Schema];
-          const origTableName = table[SQLiteTable.Symbol.OriginalName];
-          const alias = tableName === origTableName ? void 0 : joinMeta.alias;
-          joinsArray.push(
-            sql`${sql.raw(joinMeta.joinType)} join ${tableSchema ? sql`${sql.identifier(tableSchema)}.` : void 0}${sql.identifier(origTableName)}${alias && sql` ${sql.identifier(alias)}`}${onSql}`
-          );
-        } else {
-          joinsArray.push(
-            sql`${sql.raw(joinMeta.joinType)} join ${table}${onSql}`
-          );
-        }
-        if (index < joins.length - 1) {
-          joinsArray.push(sql` `);
-        }
-      }
-    }
-    return sql.join(joinsArray);
-  }
-  buildLimit(limit) {
-    return typeof limit === "object" || typeof limit === "number" && limit >= 0 ? sql` limit ${limit}` : void 0;
-  }
-  buildOrderBy(orderBy) {
-    const orderByList = [];
-    if (orderBy) {
-      for (const [index, orderByValue] of orderBy.entries()) {
-        orderByList.push(orderByValue);
-        if (index < orderBy.length - 1) {
-          orderByList.push(sql`, `);
-        }
-      }
-    }
-    return orderByList.length > 0 ? sql` order by ${sql.join(orderByList)}` : void 0;
-  }
-  buildFromTable(table) {
-    if (is(table, Table) && table[Table.Symbol.IsAlias]) {
-      return sql`${sql`${sql.identifier(table[Table.Symbol.Schema] ?? "")}.`.if(table[Table.Symbol.Schema])}${sql.identifier(table[Table.Symbol.OriginalName])} ${sql.identifier(table[Table.Symbol.Name])}`;
-    }
-    return table;
   }
   buildSelectQuery({
     withList,
@@ -5416,7 +4432,7 @@ var SQLiteDialect = class {
   }) {
     const fieldsList = fieldsFlat ?? orderSelectedFields(fields);
     for (const f of fieldsList) {
-      if (is(f.field, Column) && getTableName(f.field.table) !== (is(table, Subquery) ? table._.alias : is(table, SQLiteViewBase) ? table[ViewBaseConfig].name : is(table, SQL) ? void 0 : getTableName(table)) && !((table2) => joins?.some(
+      if (is(f.field, Column) && getTableName(f.field.table) !== (is(table, Subquery) ? table[SubqueryConfig].alias : is(table, SQLiteViewBase) ? table[ViewBaseConfig].name : is(table, SQL) ? void 0 : getTableName(table)) && !((table2) => joins?.some(
         ({ alias }) => alias === (table2[Table.Symbol.IsAlias] ? getTableName(table2) : table2[Table.Symbol.BaseName])
       ))(f.field.table)) {
         const tableName = getTableName(f.field.table);
@@ -5429,10 +4445,49 @@ var SQLiteDialect = class {
     const withSql = this.buildWithCTE(withList);
     const distinctSql = distinct ? sql` distinct` : void 0;
     const selection = this.buildSelection(fieldsList, { isSingleTable });
-    const tableSql = this.buildFromTable(table);
-    const joinsSql = this.buildJoins(joins);
+    const tableSql = (() => {
+      if (is(table, Table) && table[Table.Symbol.OriginalName] !== table[Table.Symbol.Name]) {
+        return sql`${sql.identifier(table[Table.Symbol.OriginalName])} ${sql.identifier(table[Table.Symbol.Name])}`;
+      }
+      return table;
+    })();
+    const joinsArray = [];
+    if (joins) {
+      for (const [index, joinMeta] of joins.entries()) {
+        if (index === 0) {
+          joinsArray.push(sql` `);
+        }
+        const table2 = joinMeta.table;
+        if (is(table2, SQLiteTable)) {
+          const tableName = table2[SQLiteTable.Symbol.Name];
+          const tableSchema = table2[SQLiteTable.Symbol.Schema];
+          const origTableName = table2[SQLiteTable.Symbol.OriginalName];
+          const alias = tableName === origTableName ? void 0 : joinMeta.alias;
+          joinsArray.push(
+            sql`${sql.raw(joinMeta.joinType)} join ${tableSchema ? sql`${sql.identifier(tableSchema)}.` : void 0}${sql.identifier(origTableName)}${alias && sql` ${sql.identifier(alias)}`} on ${joinMeta.on}`
+          );
+        } else {
+          joinsArray.push(
+            sql`${sql.raw(joinMeta.joinType)} join ${table2} on ${joinMeta.on}`
+          );
+        }
+        if (index < joins.length - 1) {
+          joinsArray.push(sql` `);
+        }
+      }
+    }
+    const joinsSql = sql.join(joinsArray);
     const whereSql = where ? sql` where ${where}` : void 0;
     const havingSql = having ? sql` having ${having}` : void 0;
+    const orderByList = [];
+    if (orderBy) {
+      for (const [index, orderByValue] of orderBy.entries()) {
+        orderByList.push(orderByValue);
+        if (index < orderBy.length - 1) {
+          orderByList.push(sql`, `);
+        }
+      }
+    }
     const groupByList = [];
     if (groupBy) {
       for (const [index, groupByValue] of groupBy.entries()) {
@@ -5443,8 +4498,8 @@ var SQLiteDialect = class {
       }
     }
     const groupBySql = groupByList.length > 0 ? sql` group by ${sql.join(groupByList)}` : void 0;
-    const orderBySql = this.buildOrderBy(orderBy);
-    const limitSql = this.buildLimit(limit);
+    const orderBySql = orderByList.length > 0 ? sql` order by ${sql.join(orderByList)}` : void 0;
+    const limitSql = limit ? sql` limit ${limit}` : void 0;
     const offsetSql = offset ? sql` offset ${offset}` : void 0;
     const finalQuery = sql`${withSql}select${distinctSql} ${selection} from ${tableSql}${joinsSql}${whereSql}${groupBySql}${havingSql}${orderBySql}${limitSql}${offsetSql}`;
     if (setOperators.length > 0) {
@@ -5481,7 +4536,7 @@ var SQLiteDialect = class {
           for (let i = 0; i < singleOrderBy.queryChunks.length; i++) {
             const chunk = singleOrderBy.queryChunks[i];
             if (is(chunk, SQLiteColumn)) {
-              singleOrderBy.queryChunks[i] = sql.identifier(this.casing.getColumnCasing(chunk));
+              singleOrderBy.queryChunks[i] = sql.identifier(chunk.name);
             }
           }
           orderByValues.push(sql`${singleOrderBy}`);
@@ -5491,69 +4546,51 @@ var SQLiteDialect = class {
       }
       orderBySql = sql` order by ${sql.join(orderByValues, sql`, `)}`;
     }
-    const limitSql = typeof limit === "object" || typeof limit === "number" && limit >= 0 ? sql` limit ${limit}` : void 0;
+    const limitSql = limit ? sql` limit ${limit}` : void 0;
     const operatorChunk = sql.raw(`${type} ${isAll ? "all " : ""}`);
     const offsetSql = offset ? sql` offset ${offset}` : void 0;
     return sql`${leftChunk}${operatorChunk}${rightChunk}${orderBySql}${limitSql}${offsetSql}`;
   }
-  buildInsertQuery({ table, values: valuesOrSelect, onConflict, returning, withList, select }) {
+  buildInsertQuery({ table, values, onConflict, returning, withList }) {
     const valuesSqlList = [];
     const columns = table[Table.Symbol.Columns];
-    const colEntries = Object.entries(columns).filter(
-      ([_, col]) => !col.shouldDisableInsert()
-    );
-    const insertOrder = colEntries.map(([, column]) => sql.identifier(this.casing.getColumnCasing(column)));
-    if (select) {
-      const select2 = valuesOrSelect;
-      if (is(select2, SQL)) {
-        valuesSqlList.push(select2);
-      } else {
-        valuesSqlList.push(select2.getSQL());
-      }
-    } else {
-      const values = valuesOrSelect;
-      valuesSqlList.push(sql.raw("values "));
-      for (const [valueIndex, value] of values.entries()) {
-        const valueList = [];
-        for (const [fieldName, col] of colEntries) {
-          const colValue = value[fieldName];
-          if (colValue === void 0 || is(colValue, Param) && colValue.value === void 0) {
-            let defaultValue;
-            if (col.default !== null && col.default !== void 0) {
-              defaultValue = is(col.default, SQL) ? col.default : sql.param(col.default, col);
-            } else if (col.defaultFn !== void 0) {
-              const defaultFnResult = col.defaultFn();
-              defaultValue = is(defaultFnResult, SQL) ? defaultFnResult : sql.param(defaultFnResult, col);
-            } else if (!col.default && col.onUpdateFn !== void 0) {
-              const onUpdateFnResult = col.onUpdateFn();
-              defaultValue = is(onUpdateFnResult, SQL) ? onUpdateFnResult : sql.param(onUpdateFnResult, col);
-            } else {
-              defaultValue = sql`null`;
-            }
-            valueList.push(defaultValue);
+    const colEntries = Object.entries(columns);
+    const insertOrder = colEntries.map(([, column]) => sql.identifier(column.name));
+    for (const [valueIndex, value] of values.entries()) {
+      const valueList = [];
+      for (const [fieldName, col] of colEntries) {
+        const colValue = value[fieldName];
+        if (colValue === void 0 || is(colValue, Param) && colValue.value === void 0) {
+          let defaultValue;
+          if (col.default !== null && col.default !== void 0) {
+            defaultValue = is(col.default, SQL) ? col.default : sql.param(col.default, col);
+          } else if (col.defaultFn !== void 0) {
+            const defaultFnResult = col.defaultFn();
+            defaultValue = is(defaultFnResult, SQL) ? defaultFnResult : sql.param(defaultFnResult, col);
           } else {
-            valueList.push(colValue);
+            defaultValue = sql`null`;
           }
+          valueList.push(defaultValue);
+        } else {
+          valueList.push(colValue);
         }
-        valuesSqlList.push(valueList);
-        if (valueIndex < values.length - 1) {
-          valuesSqlList.push(sql`, `);
-        }
+      }
+      valuesSqlList.push(valueList);
+      if (valueIndex < values.length - 1) {
+        valuesSqlList.push(sql`, `);
       }
     }
     const withSql = this.buildWithCTE(withList);
     const valuesSql = sql.join(valuesSqlList);
     const returningSql = returning ? sql` returning ${this.buildSelection(returning, { isSingleTable: true })}` : void 0;
-    const onConflictSql = onConflict?.length ? sql.join(onConflict) : void 0;
-    return sql`${withSql}insert into ${table} ${insertOrder} ${valuesSql}${onConflictSql}${returningSql}`;
+    const onConflictSql = onConflict ? sql` on conflict ${onConflict}` : void 0;
+    return sql`${withSql}insert into ${table} ${insertOrder} values ${valuesSql}${onConflictSql}${returningSql}`;
   }
-  sqlToQuery(sql2, invokeSource) {
+  sqlToQuery(sql2) {
     return sql2.toQuery({
-      casing: this.casing,
       escapeName: this.escapeName,
       escapeParam: this.escapeParam,
-      escapeString: this.escapeString,
-      invokeSource
+      escapeString: this.escapeString
     });
   }
   buildRelationalQuery({
@@ -5655,7 +4692,7 @@ var SQLiteDialect = class {
         relation
       } of selectedRelations) {
         const normalizedRelation = normalizeRelation(schema, tableNamesMap, relation);
-        const relationTableName = getTableUniqueName(relation.referencedTable);
+        const relationTableName = relation.referencedTable[Table.Symbol.Name];
         const relationTableTsName = tableNamesMap[relationTableName];
         const relationTableAlias = `${tableAlias}_${selectedRelationTsKey}`;
         const joinOn2 = and(
@@ -5698,7 +4735,7 @@ var SQLiteDialect = class {
     if (nestedQueryRelation) {
       let field = sql`json_array(${sql.join(
         selection.map(
-          ({ field: field2 }) => is(field2, SQLiteColumn) ? sql.identifier(this.casing.getColumnCasing(field2)) : is(field2, SQL.Aliased) ? field2.sql : field2
+          ({ field: field2 }) => is(field2, SQLiteColumn) ? sql.identifier(field2.name) : is(field2, SQL.Aliased) ? field2.sql : field2
         ),
         sql`, `
       )})`;
@@ -5818,7 +4855,7 @@ var SQLiteAsyncDialect = class extends SQLiteDialect {
   }
   static [entityKind] = "SQLiteAsyncDialect";
   async migrate(migrations, session, config) {
-    const migrationsTable = config === void 0 ? "__drizzle_migrations" : typeof config === "string" ? "__drizzle_migrations" : config.migrationsTable ?? "__drizzle_migrations";
+    const migrationsTable = typeof config === "string" ? "__drizzle_migrations" : config.migrationsTable ?? "__drizzle_migrations";
     const migrationTableCreate = sql`
 			CREATE TABLE IF NOT EXISTS ${sql.identifier(migrationsTable)} (
 				id SERIAL PRIMARY KEY,
@@ -5846,7 +4883,7 @@ var SQLiteAsyncDialect = class extends SQLiteDialect {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/query-builders/query-builder.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/query-builders/query-builder.js
 var TypedQueryBuilder = class {
   static {
     __name(this, "TypedQueryBuilder");
@@ -5858,7 +4895,7 @@ var TypedQueryBuilder = class {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/query-builders/select.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/query-builders/select.js
 var SQLiteSelectBuilder = class {
   static {
     __name(this, "SQLiteSelectBuilder");
@@ -5883,7 +4920,7 @@ var SQLiteSelectBuilder = class {
       fields = this.fields;
     } else if (is(source, Subquery)) {
       fields = Object.fromEntries(
-        Object.keys(source._.selectedFields).map((key) => [key, source[key]])
+        Object.keys(source[SubqueryConfig].selection).map((key) => [key, source[key]])
       );
     } else if (is(source, SQLiteViewBase)) {
       fields = source[ViewBaseConfig].selectedFields;
@@ -5916,8 +4953,6 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
   isPartialSelect;
   session;
   dialect;
-  cacheConfig = void 0;
-  usedTables = /* @__PURE__ */ new Set();
   constructor({ table, fields, isPartialSelect, session, dialect, withList, distinct }) {
     super();
     this.config = {
@@ -5931,22 +4966,15 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
     this.session = session;
     this.dialect = dialect;
     this._ = {
-      selectedFields: fields,
-      config: this.config
+      selectedFields: fields
     };
     this.tableName = getTableLikeName(table);
     this.joinsNotNullableMap = typeof this.tableName === "string" ? { [this.tableName]: true } : {};
-    for (const item of extractUsedTable(table)) this.usedTables.add(item);
-  }
-  /** @internal */
-  getUsedTables() {
-    return [...this.usedTables];
   }
   createJoin(joinType) {
     return (table, on) => {
       const baseTableName = this.tableName;
       const tableName = getTableLikeName(table);
-      for (const item of extractUsedTable(table)) this.usedTables.add(item);
       if (typeof tableName === "string" && this.config.joins?.some((join) => join.alias === tableName)) {
         throw new Error(`Alias "${tableName}" is already used in this query`);
       }
@@ -5957,7 +4985,7 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
           };
         }
         if (typeof tableName === "string" && !is(table, SQL)) {
-          const selection = is(table, Subquery) ? table._.selectedFields : is(table, View) ? table[ViewBaseConfig].selectedFields : table[Table.Symbol.Columns];
+          const selection = is(table, Subquery) ? table[SubqueryConfig].selection : is(table, View) ? table[ViewBaseConfig].selectedFields : table[Table.Symbol.Columns];
           this.config.fields[tableName] = selection;
         }
       }
@@ -5986,7 +5014,6 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
             this.joinsNotNullableMap[tableName] = true;
             break;
           }
-          case "cross":
           case "inner": {
             this.joinsNotNullableMap[tableName] = true;
             break;
@@ -6017,12 +5044,12 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
    *
    * ```ts
    * // Select all users and their pets
-   * const usersWithPets: { user: User; pets: Pet | null; }[] = await db.select()
+   * const usersWithPets: { user: User; pets: Pet | null }[] = await db.select()
    *   .from(users)
    *   .leftJoin(pets, eq(users.id, pets.ownerId))
    *
    * // Select userId and petId
-   * const usersIdsAndPetIds: { userId: number; petId: number | null; }[] = await db.select({
+   * const usersIdsAndPetIds: { userId: number; petId: number | null }[] = await db.select({
    *   userId: users.id,
    *   petId: pets.id,
    * })
@@ -6045,12 +5072,12 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
    *
    * ```ts
    * // Select all users and their pets
-   * const usersWithPets: { user: User | null; pets: Pet; }[] = await db.select()
+   * const usersWithPets: { user: User | null; pets: Pet }[] = await db.select()
    *   .from(users)
    *   .rightJoin(pets, eq(users.id, pets.ownerId))
    *
    * // Select userId and petId
-   * const usersIdsAndPetIds: { userId: number | null; petId: number; }[] = await db.select({
+   * const usersIdsAndPetIds: { userId: number | null; petId: number }[] = await db.select({
    *   userId: users.id,
    *   petId: pets.id,
    * })
@@ -6073,12 +5100,12 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
    *
    * ```ts
    * // Select all users and their pets
-   * const usersWithPets: { user: User; pets: Pet; }[] = await db.select()
+   * const usersWithPets: { user: User; pets: Pet }[] = await db.select()
    *   .from(users)
    *   .innerJoin(pets, eq(users.id, pets.ownerId))
    *
    * // Select userId and petId
-   * const usersIdsAndPetIds: { userId: number; petId: number; }[] = await db.select({
+   * const usersIdsAndPetIds: { userId: number; petId: number }[] = await db.select({
    *   userId: users.id,
    *   petId: pets.id,
    * })
@@ -6101,12 +5128,12 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
    *
    * ```ts
    * // Select all users and their pets
-   * const usersWithPets: { user: User | null; pets: Pet | null; }[] = await db.select()
+   * const usersWithPets: { user: User | null; pets: Pet | null }[] = await db.select()
    *   .from(users)
    *   .fullJoin(pets, eq(users.id, pets.ownerId))
    *
    * // Select userId and petId
-   * const usersIdsAndPetIds: { userId: number | null; petId: number | null; }[] = await db.select({
+   * const usersIdsAndPetIds: { userId: number | null; petId: number | null }[] = await db.select({
    *   userId: users.id,
    *   petId: pets.id,
    * })
@@ -6115,33 +5142,6 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
    * ```
    */
   fullJoin = this.createJoin("full");
-  /**
-   * Executes a `cross join` operation by combining rows from two tables into a new table.
-   *
-   * Calling this method retrieves all rows from both main and joined tables, merging all rows from each table.
-   *
-   * See docs: {@link https://orm.drizzle.team/docs/joins#cross-join}
-   *
-   * @param table the table to join.
-   *
-   * @example
-   *
-   * ```ts
-   * // Select all users, each user with every pet
-   * const usersWithPets: { user: User; pets: Pet; }[] = await db.select()
-   *   .from(users)
-   *   .crossJoin(pets)
-   *
-   * // Select userId and petId
-   * const usersIdsAndPetIds: { userId: number; petId: number; }[] = await db.select({
-   *   userId: users.id,
-   *   petId: pets.id,
-   * })
-   *   .from(users)
-   *   .crossJoin(pets)
-   * ```
-   */
-  crossJoin = this.createJoin("cross");
   createSetOperator(type, isAll) {
     return (rightSelection) => {
       const rightSelect = typeof rightSelection === "function" ? rightSelection(getSQLiteSetOperators()) : rightSelection;
@@ -6433,13 +5433,8 @@ var SQLiteSelectQueryBuilderBase = class extends TypedQueryBuilder {
     return rest;
   }
   as(alias) {
-    const usedTables = [];
-    usedTables.push(...extractUsedTable(this.config.table));
-    if (this.config.joins) {
-      for (const it of this.config.joins) usedTables.push(...extractUsedTable(it.table));
-    }
     return new Proxy(
-      new Subquery(this.getSQL(), this.config.fields, alias, false, [...new Set(usedTables)]),
+      new Subquery(this.getSQL(), this.config.fields, alias),
       new SelectionProxyHandler({ alias, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
     );
   }
@@ -6468,21 +5463,10 @@ var SQLiteSelectBase = class extends SQLiteSelectQueryBuilderBase {
     const query = this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
       this.dialect.sqlToQuery(this.getSQL()),
       fieldsList,
-      "all",
-      true,
-      void 0,
-      {
-        type: "select",
-        tables: [...this.usedTables]
-      },
-      this.cacheConfig
+      "all"
     );
     query.joinsNotNullableMap = this.joinsNotNullableMap;
     return query;
-  }
-  $withCache(config) {
-    this.cacheConfig = config === void 0 ? { config: {}, enable: true, autoInvalidate: true } : config === false ? { enable: false } : { enable: true, autoInvalidate: true, ...config };
-    return this;
   }
   prepare() {
     return this._prepare(false);
@@ -6533,36 +5517,27 @@ var unionAll = createSetOperator("union", true);
 var intersect = createSetOperator("intersect", false);
 var except = createSetOperator("except", false);
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/query-builders/query-builder.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/query-builders/query-builder.js
 var QueryBuilder = class {
   static {
     __name(this, "QueryBuilder");
   }
   static [entityKind] = "SQLiteQueryBuilder";
   dialect;
-  dialectConfig;
-  constructor(dialect) {
-    this.dialect = is(dialect, SQLiteDialect) ? dialect : void 0;
-    this.dialectConfig = is(dialect, SQLiteDialect) ? void 0 : dialect;
-  }
-  $with = /* @__PURE__ */ __name((alias, selection) => {
+  $with(alias) {
     const queryBuilder = this;
-    const as = /* @__PURE__ */ __name((qb) => {
-      if (typeof qb === "function") {
-        qb = qb(queryBuilder);
+    return {
+      as(qb) {
+        if (typeof qb === "function") {
+          qb = qb(queryBuilder);
+        }
+        return new Proxy(
+          new WithSubquery(qb.getSQL(), qb.getSelectedFields(), alias, true),
+          new SelectionProxyHandler({ alias, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
+        );
       }
-      return new Proxy(
-        new WithSubquery(
-          qb.getSQL(),
-          selection ?? ("getSelectedFields" in qb ? qb.getSelectedFields() ?? {} : {}),
-          alias,
-          true
-        ),
-        new SelectionProxyHandler({ alias, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
-      );
-    }, "as");
-    return { as };
-  }, "$with");
+    };
+  }
   with(...queries) {
     const self = this;
     function select(fields) {
@@ -6600,192 +5575,13 @@ var QueryBuilder = class {
   // Lazy load dialect to avoid circular dependency
   getDialect() {
     if (!this.dialect) {
-      this.dialect = new SQLiteSyncDialect(this.dialectConfig);
+      this.dialect = new SQLiteSyncDialect();
     }
     return this.dialect;
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/query-builders/insert.js
-var SQLiteInsertBuilder = class {
-  static {
-    __name(this, "SQLiteInsertBuilder");
-  }
-  constructor(table, session, dialect, withList) {
-    this.table = table;
-    this.session = session;
-    this.dialect = dialect;
-    this.withList = withList;
-  }
-  static [entityKind] = "SQLiteInsertBuilder";
-  values(values) {
-    values = Array.isArray(values) ? values : [values];
-    if (values.length === 0) {
-      throw new Error("values() must be called with at least one value");
-    }
-    const mappedValues = values.map((entry) => {
-      const result = {};
-      const cols = this.table[Table.Symbol.Columns];
-      for (const colKey of Object.keys(entry)) {
-        const colValue = entry[colKey];
-        result[colKey] = is(colValue, SQL) ? colValue : new Param(colValue, cols[colKey]);
-      }
-      return result;
-    });
-    return new SQLiteInsertBase(this.table, mappedValues, this.session, this.dialect, this.withList);
-  }
-  select(selectQuery) {
-    const select = typeof selectQuery === "function" ? selectQuery(new QueryBuilder()) : selectQuery;
-    if (!is(select, SQL) && !haveSameKeys(this.table[Columns], select._.selectedFields)) {
-      throw new Error(
-        "Insert select error: selected fields are not the same or are in a different order compared to the table definition"
-      );
-    }
-    return new SQLiteInsertBase(this.table, select, this.session, this.dialect, this.withList, true);
-  }
-};
-var SQLiteInsertBase = class extends QueryPromise {
-  static {
-    __name(this, "SQLiteInsertBase");
-  }
-  constructor(table, values, session, dialect, withList, select) {
-    super();
-    this.session = session;
-    this.dialect = dialect;
-    this.config = { table, values, withList, select };
-  }
-  static [entityKind] = "SQLiteInsert";
-  /** @internal */
-  config;
-  returning(fields = this.config.table[SQLiteTable.Symbol.Columns]) {
-    this.config.returning = orderSelectedFields(fields);
-    return this;
-  }
-  /**
-   * Adds an `on conflict do nothing` clause to the query.
-   *
-   * Calling this method simply avoids inserting a row as its alternative action.
-   *
-   * See docs: {@link https://orm.drizzle.team/docs/insert#on-conflict-do-nothing}
-   *
-   * @param config The `target` and `where` clauses.
-   *
-   * @example
-   * ```ts
-   * // Insert one row and cancel the insert if there's a conflict
-   * await db.insert(cars)
-   *   .values({ id: 1, brand: 'BMW' })
-   *   .onConflictDoNothing();
-   *
-   * // Explicitly specify conflict target
-   * await db.insert(cars)
-   *   .values({ id: 1, brand: 'BMW' })
-   *   .onConflictDoNothing({ target: cars.id });
-   * ```
-   */
-  onConflictDoNothing(config = {}) {
-    if (!this.config.onConflict) this.config.onConflict = [];
-    if (config.target === void 0) {
-      this.config.onConflict.push(sql` on conflict do nothing`);
-    } else {
-      const targetSql = Array.isArray(config.target) ? sql`${config.target}` : sql`${[config.target]}`;
-      const whereSql = config.where ? sql` where ${config.where}` : sql``;
-      this.config.onConflict.push(sql` on conflict ${targetSql} do nothing${whereSql}`);
-    }
-    return this;
-  }
-  /**
-   * Adds an `on conflict do update` clause to the query.
-   *
-   * Calling this method will update the existing row that conflicts with the row proposed for insertion as its alternative action.
-   *
-   * See docs: {@link https://orm.drizzle.team/docs/insert#upserts-and-conflicts}
-   *
-   * @param config The `target`, `set` and `where` clauses.
-   *
-   * @example
-   * ```ts
-   * // Update the row if there's a conflict
-   * await db.insert(cars)
-   *   .values({ id: 1, brand: 'BMW' })
-   *   .onConflictDoUpdate({
-   *     target: cars.id,
-   *     set: { brand: 'Porsche' }
-   *   });
-   *
-   * // Upsert with 'where' clause
-   * await db.insert(cars)
-   *   .values({ id: 1, brand: 'BMW' })
-   *   .onConflictDoUpdate({
-   *     target: cars.id,
-   *     set: { brand: 'newBMW' },
-   *     where: sql`${cars.createdAt} > '2023-01-01'::date`,
-   *   });
-   * ```
-   */
-  onConflictDoUpdate(config) {
-    if (config.where && (config.targetWhere || config.setWhere)) {
-      throw new Error(
-        'You cannot use both "where" and "targetWhere"/"setWhere" at the same time - "where" is deprecated, use "targetWhere" or "setWhere" instead.'
-      );
-    }
-    if (!this.config.onConflict) this.config.onConflict = [];
-    const whereSql = config.where ? sql` where ${config.where}` : void 0;
-    const targetWhereSql = config.targetWhere ? sql` where ${config.targetWhere}` : void 0;
-    const setWhereSql = config.setWhere ? sql` where ${config.setWhere}` : void 0;
-    const targetSql = Array.isArray(config.target) ? sql`${config.target}` : sql`${[config.target]}`;
-    const setSql = this.dialect.buildUpdateSet(this.config.table, mapUpdateSet(this.config.table, config.set));
-    this.config.onConflict.push(
-      sql` on conflict ${targetSql}${targetWhereSql} do update set ${setSql}${whereSql}${setWhereSql}`
-    );
-    return this;
-  }
-  /** @internal */
-  getSQL() {
-    return this.dialect.buildInsertQuery(this.config);
-  }
-  toSQL() {
-    const { typings: _typings, ...rest } = this.dialect.sqlToQuery(this.getSQL());
-    return rest;
-  }
-  /** @internal */
-  _prepare(isOneTimeQuery = true) {
-    return this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
-      this.dialect.sqlToQuery(this.getSQL()),
-      this.config.returning,
-      this.config.returning ? "all" : "run",
-      true,
-      void 0,
-      {
-        type: "insert",
-        tables: extractUsedTable(this.config.table)
-      }
-    );
-  }
-  prepare() {
-    return this._prepare(false);
-  }
-  run = /* @__PURE__ */ __name((placeholderValues) => {
-    return this._prepare().run(placeholderValues);
-  }, "run");
-  all = /* @__PURE__ */ __name((placeholderValues) => {
-    return this._prepare().all(placeholderValues);
-  }, "all");
-  get = /* @__PURE__ */ __name((placeholderValues) => {
-    return this._prepare().get(placeholderValues);
-  }, "get");
-  values = /* @__PURE__ */ __name((placeholderValues) => {
-    return this._prepare().values(placeholderValues);
-  }, "values");
-  async execute() {
-    return this.config.returning ? this.all() : this.run();
-  }
-  $dynamic() {
-    return this;
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/query-builders/update.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/query-builders/update.js
 var SQLiteUpdateBuilder = class {
   static {
     __name(this, "SQLiteUpdateBuilder");
@@ -6815,42 +5611,11 @@ var SQLiteUpdateBase = class extends QueryPromise {
     super();
     this.session = session;
     this.dialect = dialect;
-    this.config = { set, table, withList, joins: [] };
+    this.config = { set, table, withList };
   }
   static [entityKind] = "SQLiteUpdate";
   /** @internal */
   config;
-  from(source) {
-    this.config.from = source;
-    return this;
-  }
-  createJoin(joinType) {
-    return (table, on) => {
-      const tableName = getTableLikeName(table);
-      if (typeof tableName === "string" && this.config.joins.some((join) => join.alias === tableName)) {
-        throw new Error(`Alias "${tableName}" is already used in this query`);
-      }
-      if (typeof on === "function") {
-        const from = this.config.from ? is(table, SQLiteTable) ? table[Table.Symbol.Columns] : is(table, Subquery) ? table._.selectedFields : is(table, SQLiteViewBase) ? table[ViewBaseConfig].selectedFields : void 0 : void 0;
-        on = on(
-          new Proxy(
-            this.config.table[Table.Symbol.Columns],
-            new SelectionProxyHandler({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
-          ),
-          from && new Proxy(
-            from,
-            new SelectionProxyHandler({ sqlAliasedBehavior: "sql", sqlBehavior: "sql" })
-          )
-        );
-      }
-      this.config.joins.push({ on, table, joinType, alias: tableName });
-      return this;
-    };
-  }
-  leftJoin = this.createJoin("left");
-  rightJoin = this.createJoin("right");
-  innerJoin = this.createJoin("inner");
-  fullJoin = this.createJoin("full");
   /**
    * Adds a 'where' clause to the query.
    *
@@ -6888,26 +5653,6 @@ var SQLiteUpdateBase = class extends QueryPromise {
     this.config.where = where;
     return this;
   }
-  orderBy(...columns) {
-    if (typeof columns[0] === "function") {
-      const orderBy = columns[0](
-        new Proxy(
-          this.config.table[Table.Symbol.Columns],
-          new SelectionProxyHandler({ sqlAliasedBehavior: "alias", sqlBehavior: "sql" })
-        )
-      );
-      const orderByArray = Array.isArray(orderBy) ? orderBy : [orderBy];
-      this.config.orderBy = orderByArray;
-    } else {
-      const orderByArray = columns;
-      this.config.orderBy = orderByArray;
-    }
-    return this;
-  }
-  limit(limit) {
-    this.config.limit = limit;
-    return this;
-  }
   returning(fields = this.config.table[SQLiteTable.Symbol.Columns]) {
     this.config.returning = orderSelectedFields(fields);
     return this;
@@ -6925,13 +5670,7 @@ var SQLiteUpdateBase = class extends QueryPromise {
     return this.session[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
       this.dialect.sqlToQuery(this.getSQL()),
       this.config.returning,
-      this.config.returning ? "all" : "run",
-      true,
-      void 0,
-      {
-        type: "insert",
-        tables: extractUsedTable(this.config.table)
-      }
+      this.config.returning ? "all" : "run"
     );
   }
   prepare() {
@@ -6957,54 +5696,7 @@ var SQLiteUpdateBase = class extends QueryPromise {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/query-builders/count.js
-var SQLiteCountBuilder = class _SQLiteCountBuilder extends SQL {
-  static {
-    __name(this, "SQLiteCountBuilder");
-  }
-  constructor(params) {
-    super(_SQLiteCountBuilder.buildEmbeddedCount(params.source, params.filters).queryChunks);
-    this.params = params;
-    this.session = params.session;
-    this.sql = _SQLiteCountBuilder.buildCount(
-      params.source,
-      params.filters
-    );
-  }
-  sql;
-  static [entityKind] = "SQLiteCountBuilderAsync";
-  [Symbol.toStringTag] = "SQLiteCountBuilderAsync";
-  session;
-  static buildEmbeddedCount(source, filters) {
-    return sql`(select count(*) from ${source}${sql.raw(" where ").if(filters)}${filters})`;
-  }
-  static buildCount(source, filters) {
-    return sql`select count(*) from ${source}${sql.raw(" where ").if(filters)}${filters}`;
-  }
-  then(onfulfilled, onrejected) {
-    return Promise.resolve(this.session.count(this.sql)).then(
-      onfulfilled,
-      onrejected
-    );
-  }
-  catch(onRejected) {
-    return this.then(void 0, onRejected);
-  }
-  finally(onFinally) {
-    return this.then(
-      (value) => {
-        onFinally?.();
-        return value;
-      },
-      (reason) => {
-        onFinally?.();
-        throw reason;
-      }
-    );
-  }
-};
-
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/query-builders/query.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/query-builders/query.js
 var RelationalQueryBuilder = class {
   static {
     __name(this, "RelationalQueryBuilder");
@@ -7105,7 +5797,6 @@ var SQLiteRelationalQuery = class extends QueryPromise {
       builtQuery,
       void 0,
       this.mode === "first" ? "get" : "all",
-      true,
       (rawRows, mapColumnValue) => {
         const rows = rawRows.map(
           (row) => mapRelationalRow(this.schema, this.tableConfig, row, query.selection, mapColumnValue)
@@ -7157,7 +5848,7 @@ var SQLiteSyncRelationalQuery = class extends SQLiteRelationalQuery {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/query-builders/raw.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/query-builders/raw.js
 var SQLiteRaw = class extends QueryPromise {
   static {
     __name(this, "SQLiteRaw");
@@ -7182,13 +5873,9 @@ var SQLiteRaw = class extends QueryPromise {
   _prepare() {
     return this;
   }
-  /** @internal */
-  isResponseInArrayMode() {
-    return false;
-  }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/db.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/db.js
 var BaseSQLiteDatabase = class {
   static {
     __name(this, "BaseSQLiteDatabase");
@@ -7197,15 +5884,7 @@ var BaseSQLiteDatabase = class {
     this.resultKind = resultKind;
     this.dialect = dialect;
     this.session = session;
-    this._ = schema ? {
-      schema: schema.schema,
-      fullSchema: schema.fullSchema,
-      tableNamesMap: schema.tableNamesMap
-    } : {
-      schema: void 0,
-      fullSchema: {},
-      tableNamesMap: {}
-    };
+    this._ = schema ? { schema: schema.schema, tableNamesMap: schema.tableNamesMap } : { schema: void 0, tableNamesMap: {} };
     this.query = {};
     const query = this.query;
     if (this._.schema) {
@@ -7222,8 +5901,6 @@ var BaseSQLiteDatabase = class {
         );
       }
     }
-    this.$cache = { invalidate: /* @__PURE__ */ __name(async (_params) => {
-    }, "invalidate") };
   }
   static [entityKind] = "BaseSQLiteDatabase";
   query;
@@ -7259,26 +5936,18 @@ var BaseSQLiteDatabase = class {
    * const result = await db.with(sq).select({ name: sq.name }).from(sq);
    * ```
    */
-  $with = /* @__PURE__ */ __name((alias, selection) => {
-    const self = this;
-    const as = /* @__PURE__ */ __name((qb) => {
-      if (typeof qb === "function") {
-        qb = qb(new QueryBuilder(self.dialect));
+  $with(alias) {
+    return {
+      as(qb) {
+        if (typeof qb === "function") {
+          qb = qb(new QueryBuilder());
+        }
+        return new Proxy(
+          new WithSubquery(qb.getSQL(), qb.getSelectedFields(), alias, true),
+          new SelectionProxyHandler({ alias, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
+        );
       }
-      return new Proxy(
-        new WithSubquery(
-          qb.getSQL(),
-          selection ?? ("getSelectedFields" in qb ? qb.getSelectedFields() ?? {} : {}),
-          alias,
-          true
-        ),
-        new SelectionProxyHandler({ alias, sqlAliasedBehavior: "alias", sqlBehavior: "error" })
-      );
-    }, "as");
-    return { as };
-  }, "$with");
-  $count(source, filters) {
-    return new SQLiteCountBuilder({ source, filters, session: this.session });
+    };
   }
   /**
    * Incorporates a previously defined CTE (using `$with`) into the main query.
@@ -7375,7 +6044,6 @@ var BaseSQLiteDatabase = class {
   update(table) {
     return new SQLiteUpdateBuilder(table, this.session, this.dialect);
   }
-  $cache;
   /**
    * Creates an insert query.
    *
@@ -7431,97 +6099,106 @@ var BaseSQLiteDatabase = class {
     return new SQLiteDeleteBase(from, this.session, this.dialect);
   }
   run(query) {
-    const sequel = typeof query === "string" ? sql.raw(query) : query.getSQL();
+    const sql2 = query.getSQL();
     if (this.resultKind === "async") {
       return new SQLiteRaw(
-        async () => this.session.run(sequel),
-        () => sequel,
+        async () => this.session.run(sql2),
+        () => sql2,
         "run",
         this.dialect,
         this.session.extractRawRunValueFromBatchResult.bind(this.session)
       );
     }
-    return this.session.run(sequel);
+    return this.session.run(sql2);
   }
   all(query) {
-    const sequel = typeof query === "string" ? sql.raw(query) : query.getSQL();
+    const sql2 = query.getSQL();
     if (this.resultKind === "async") {
       return new SQLiteRaw(
-        async () => this.session.all(sequel),
-        () => sequel,
+        async () => this.session.all(sql2),
+        () => sql2,
         "all",
         this.dialect,
         this.session.extractRawAllValueFromBatchResult.bind(this.session)
       );
     }
-    return this.session.all(sequel);
+    return this.session.all(sql2);
   }
   get(query) {
-    const sequel = typeof query === "string" ? sql.raw(query) : query.getSQL();
+    const sql2 = query.getSQL();
     if (this.resultKind === "async") {
       return new SQLiteRaw(
-        async () => this.session.get(sequel),
-        () => sequel,
+        async () => this.session.get(sql2),
+        () => sql2,
         "get",
         this.dialect,
         this.session.extractRawGetValueFromBatchResult.bind(this.session)
       );
     }
-    return this.session.get(sequel);
+    return this.session.get(sql2);
   }
   values(query) {
-    const sequel = typeof query === "string" ? sql.raw(query) : query.getSQL();
+    const sql2 = query.getSQL();
     if (this.resultKind === "async") {
       return new SQLiteRaw(
-        async () => this.session.values(sequel),
-        () => sequel,
+        async () => this.session.values(sql2),
+        () => sql2,
         "values",
         this.dialect,
         this.session.extractRawValuesValueFromBatchResult.bind(this.session)
       );
     }
-    return this.session.values(sequel);
+    return this.session.values(sql2);
   }
   transaction(transaction, config) {
     return this.session.transaction(transaction, config);
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/cache/core/cache.js
-var Cache = class {
-  static {
-    __name(this, "Cache");
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/primary-keys.js
+function primaryKey(...config) {
+  if (config[0].columns) {
+    return new PrimaryKeyBuilder2(config[0].columns, config[0].name);
   }
-  static [entityKind] = "Cache";
-};
-var NoopCache = class extends Cache {
-  static {
-    __name(this, "NoopCache");
-  }
-  strategy() {
-    return "all";
-  }
-  static [entityKind] = "NoopCache";
-  async get(_key) {
-    return void 0;
-  }
-  async put(_hashedQuery, _response, _tables, _config) {
-  }
-  async onMutate(_params) {
-  }
-};
-async function hashQuery(sql2, params) {
-  const dataToHash = `${sql2}-${JSON.stringify(params)}`;
-  const encoder = new TextEncoder();
-  const data = encoder.encode(dataToHash);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = [...new Uint8Array(hashBuffer)];
-  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-  return hashHex;
+  return new PrimaryKeyBuilder2(config);
 }
-__name(hashQuery, "hashQuery");
+__name(primaryKey, "primaryKey");
+var PrimaryKeyBuilder2 = class {
+  static {
+    __name(this, "PrimaryKeyBuilder");
+  }
+  static [entityKind] = "SQLitePrimaryKeyBuilder";
+  /** @internal */
+  columns;
+  /** @internal */
+  name;
+  constructor(columns, name) {
+    this.columns = columns;
+    this.name = name;
+  }
+  /** @internal */
+  build(table) {
+    return new PrimaryKey2(table, this.columns, this.name);
+  }
+};
+var PrimaryKey2 = class {
+  static {
+    __name(this, "PrimaryKey");
+  }
+  constructor(table, columns, name) {
+    this.table = table;
+    this.columns = columns;
+    this.name = name;
+  }
+  static [entityKind] = "SQLitePrimaryKey";
+  columns;
+  name;
+  getName() {
+    return this.name ?? `${this.table[SQLiteTable.Symbol.Name]}_${this.columns.map((column) => column.name).join("_")}_pk`;
+  }
+};
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/sqlite-core/session.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/sqlite-core/session.js
 var ExecuteResultSync = class extends QueryPromise {
   static {
     __name(this, "ExecuteResultSync");
@@ -7542,89 +6219,14 @@ var SQLitePreparedQuery = class {
   static {
     __name(this, "SQLitePreparedQuery");
   }
-  constructor(mode, executeMethod, query, cache, queryMetadata, cacheConfig) {
+  constructor(mode, executeMethod, query) {
     this.mode = mode;
     this.executeMethod = executeMethod;
     this.query = query;
-    this.cache = cache;
-    this.queryMetadata = queryMetadata;
-    this.cacheConfig = cacheConfig;
-    if (cache && cache.strategy() === "all" && cacheConfig === void 0) {
-      this.cacheConfig = { enable: true, autoInvalidate: true };
-    }
-    if (!this.cacheConfig?.enable) {
-      this.cacheConfig = void 0;
-    }
   }
   static [entityKind] = "PreparedQuery";
   /** @internal */
   joinsNotNullableMap;
-  /** @internal */
-  async queryWithCache(queryString, params, query) {
-    if (this.cache === void 0 || is(this.cache, NoopCache) || this.queryMetadata === void 0) {
-      try {
-        return await query();
-      } catch (e) {
-        throw new DrizzleQueryError(queryString, params, e);
-      }
-    }
-    if (this.cacheConfig && !this.cacheConfig.enable) {
-      try {
-        return await query();
-      } catch (e) {
-        throw new DrizzleQueryError(queryString, params, e);
-      }
-    }
-    if ((this.queryMetadata.type === "insert" || this.queryMetadata.type === "update" || this.queryMetadata.type === "delete") && this.queryMetadata.tables.length > 0) {
-      try {
-        const [res] = await Promise.all([
-          query(),
-          this.cache.onMutate({ tables: this.queryMetadata.tables })
-        ]);
-        return res;
-      } catch (e) {
-        throw new DrizzleQueryError(queryString, params, e);
-      }
-    }
-    if (!this.cacheConfig) {
-      try {
-        return await query();
-      } catch (e) {
-        throw new DrizzleQueryError(queryString, params, e);
-      }
-    }
-    if (this.queryMetadata.type === "select") {
-      const fromCache = await this.cache.get(
-        this.cacheConfig.tag ?? await hashQuery(queryString, params),
-        this.queryMetadata.tables,
-        this.cacheConfig.tag !== void 0,
-        this.cacheConfig.autoInvalidate
-      );
-      if (fromCache === void 0) {
-        let result;
-        try {
-          result = await query();
-        } catch (e) {
-          throw new DrizzleQueryError(queryString, params, e);
-        }
-        await this.cache.put(
-          this.cacheConfig.tag ?? await hashQuery(queryString, params),
-          result,
-          // make sure we send tables that were used in a query only if user wants to invalidate it on each write
-          this.cacheConfig.autoInvalidate ? this.queryMetadata.tables : [],
-          this.cacheConfig.tag !== void 0,
-          this.cacheConfig.config
-        );
-        return result;
-      }
-      return fromCache;
-    }
-    try {
-      return await query();
-    } catch (e) {
-      throw new DrizzleQueryError(queryString, params, e);
-    }
-  }
   getQuery() {
     return this.query;
   }
@@ -7665,21 +6267,13 @@ var SQLiteSession = class {
     this.dialect = dialect;
   }
   static [entityKind] = "SQLiteSession";
-  prepareOneTimeQuery(query, fields, executeMethod, isResponseInArrayMode, customResultMapper, queryMetadata, cacheConfig) {
-    return this.prepareQuery(
-      query,
-      fields,
-      executeMethod,
-      isResponseInArrayMode,
-      customResultMapper,
-      queryMetadata,
-      cacheConfig
-    );
+  prepareOneTimeQuery(query, fields, executeMethod) {
+    return this.prepareQuery(query, fields, executeMethod);
   }
   run(query) {
     const staticQuery = this.dialect.sqlToQuery(query);
     try {
-      return this.prepareOneTimeQuery(staticQuery, void 0, "run", false).run();
+      return this.prepareOneTimeQuery(staticQuery, void 0, "run").run();
     } catch (err) {
       throw new DrizzleError({ cause: err, message: `Failed to run the query '${staticQuery.sql}'` });
     }
@@ -7689,25 +6283,21 @@ var SQLiteSession = class {
     return result;
   }
   all(query) {
-    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(query), void 0, "run", false).all();
+    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(query), void 0, "run").all();
   }
   /** @internal */
   extractRawAllValueFromBatchResult(_result) {
     throw new Error("Not implemented");
   }
   get(query) {
-    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(query), void 0, "run", false).get();
+    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(query), void 0, "run").get();
   }
   /** @internal */
   extractRawGetValueFromBatchResult(_result) {
     throw new Error("Not implemented");
   }
   values(query) {
-    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(query), void 0, "run", false).values();
-  }
-  async count(sql2) {
-    const result = await this.values(sql2);
-    return result[0][0];
+    return this.prepareOneTimeQuery(this.dialect.sqlToQuery(query), void 0, "run").values();
   }
   /** @internal */
   extractRawValuesValueFromBatchResult(_result) {
@@ -7729,7 +6319,7 @@ var SQLiteTransaction = class extends BaseSQLiteDatabase {
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/d1/session.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/d1/session.js
 var SQLiteD1Session = class extends SQLiteSession {
   static {
     __name(this, "SQLiteD1Session");
@@ -7740,26 +6330,14 @@ var SQLiteD1Session = class extends SQLiteSession {
     this.schema = schema;
     this.options = options;
     this.logger = options.logger ?? new NoopLogger();
-    this.cache = options.cache ?? new NoopCache();
   }
   static [entityKind] = "SQLiteD1Session";
   logger;
-  cache;
-  prepareQuery(query, fields, executeMethod, isResponseInArrayMode, customResultMapper, queryMetadata, cacheConfig) {
+  prepareQuery(query, fields, executeMethod, customResultMapper) {
     const stmt = this.client.prepare(query.sql);
-    return new D1PreparedQuery(
-      stmt,
-      query,
-      this.logger,
-      this.cache,
-      queryMetadata,
-      cacheConfig,
-      fields,
-      executeMethod,
-      isResponseInArrayMode,
-      customResultMapper
-    );
+    return new D1PreparedQuery(stmt, query, this.logger, fields, executeMethod, customResultMapper);
   }
+  /*override */
   async batch(queries) {
     const preparedQueries = [];
     const builtQueries = [];
@@ -7833,10 +6411,9 @@ var D1PreparedQuery = class extends SQLitePreparedQuery {
   static {
     __name(this, "D1PreparedQuery");
   }
-  constructor(stmt, query, logger, cache, queryMetadata, cacheConfig, fields, executeMethod, _isResponseInArrayMode, customResultMapper) {
-    super("async", executeMethod, query, cache, queryMetadata, cacheConfig);
+  constructor(stmt, query, logger, fields, executeMethod, customResultMapper) {
+    super("async", executeMethod, query);
     this.logger = logger;
-    this._isResponseInArrayMode = _isResponseInArrayMode;
     this.customResultMapper = customResultMapper;
     this.fields = fields;
     this.stmt = stmt;
@@ -7848,21 +6425,17 @@ var D1PreparedQuery = class extends SQLitePreparedQuery {
   fields;
   /** @internal */
   stmt;
-  async run(placeholderValues) {
+  run(placeholderValues) {
     const params = fillPlaceholders(this.query.params, placeholderValues ?? {});
     this.logger.logQuery(this.query.sql, params);
-    return await this.queryWithCache(this.query.sql, params, async () => {
-      return this.stmt.bind(...params).run();
-    });
+    return this.stmt.bind(...params).run();
   }
   async all(placeholderValues) {
     const { fields, query, logger, stmt, customResultMapper } = this;
     if (!fields && !customResultMapper) {
       const params = fillPlaceholders(query.params, placeholderValues ?? {});
       logger.logQuery(query.sql, params);
-      return await this.queryWithCache(query.sql, params, async () => {
-        return stmt.bind(...params).all().then(({ results }) => this.mapAllResult(results));
-      });
+      return stmt.bind(...params).all().then(({ results }) => this.mapAllResult(results));
     }
     const rows = await this.values(placeholderValues);
     return this.mapAllResult(rows);
@@ -7884,9 +6457,7 @@ var D1PreparedQuery = class extends SQLitePreparedQuery {
     if (!fields && !customResultMapper) {
       const params = fillPlaceholders(query.params, placeholderValues ?? {});
       logger.logQuery(query.sql, params);
-      return await this.queryWithCache(query.sql, params, async () => {
-        return stmt.bind(...params).all().then(({ results }) => results[0]);
-      });
+      return stmt.bind(...params).all().then(({ results }) => results[0]);
     }
     const rows = await this.values(placeholderValues);
     if (!rows[0]) {
@@ -7909,31 +6480,25 @@ var D1PreparedQuery = class extends SQLitePreparedQuery {
     }
     return mapResultRow(this.fields, result, this.joinsNotNullableMap);
   }
-  async values(placeholderValues) {
+  values(placeholderValues) {
     const params = fillPlaceholders(this.query.params, placeholderValues ?? {});
     this.logger.logQuery(this.query.sql, params);
-    return await this.queryWithCache(this.query.sql, params, async () => {
-      return this.stmt.bind(...params).raw();
-    });
-  }
-  /** @internal */
-  isResponseInArrayMode() {
-    return this._isResponseInArrayMode;
+    return this.stmt.bind(...params).raw();
   }
 };
 
-// ../node_modules/.pnpm/drizzle-orm@0.45.1_@cloudflare+workers-types@4.20260301.1/node_modules/drizzle-orm/d1/driver.js
+// ../node_modules/.pnpm/drizzle-orm@0.29.5_@cloudflare+workers-types@4.20260301.1_@types+react@19.1.17_react@19.1.0/node_modules/drizzle-orm/d1/driver.js
 var DrizzleD1Database = class extends BaseSQLiteDatabase {
   static {
     __name(this, "DrizzleD1Database");
   }
-  static [entityKind] = "D1Database";
+  static [entityKind] = "LibSQLDatabase";
   async batch(batch) {
     return this.session.batch(batch);
   }
 };
 function drizzle(client, config = {}) {
-  const dialect = new SQLiteAsyncDialect({ casing: config.casing });
+  const dialect = new SQLiteAsyncDialect();
   let logger;
   if (config.logger === true) {
     logger = new DefaultLogger();
@@ -7952,40 +6517,12 @@ function drizzle(client, config = {}) {
       tableNamesMap: tablesConfig.tableNamesMap
     };
   }
-  const session = new SQLiteD1Session(client, dialect, schema, { logger, cache: config.cache });
-  const db = new DrizzleD1Database("async", dialect, session, schema);
-  db.$client = client;
-  db.$cache = config.cache;
-  if (db.$cache) {
-    db.$cache["invalidate"] = config.cache?.onMutate;
-  }
-  return db;
+  const session = new SQLiteD1Session(client, dialect, schema, { logger });
+  return new DrizzleD1Database("async", dialect, session, schema);
 }
 __name(drizzle, "drizzle");
 
-// ../node_modules/.pnpm/@google+generative-ai@0.24.1/node_modules/@google/generative-ai/dist/index.mjs
-var SchemaType;
-(function(SchemaType2) {
-  SchemaType2["STRING"] = "string";
-  SchemaType2["NUMBER"] = "number";
-  SchemaType2["INTEGER"] = "integer";
-  SchemaType2["BOOLEAN"] = "boolean";
-  SchemaType2["ARRAY"] = "array";
-  SchemaType2["OBJECT"] = "object";
-})(SchemaType || (SchemaType = {}));
-var ExecutableCodeLanguage;
-(function(ExecutableCodeLanguage2) {
-  ExecutableCodeLanguage2["LANGUAGE_UNSPECIFIED"] = "language_unspecified";
-  ExecutableCodeLanguage2["PYTHON"] = "python";
-})(ExecutableCodeLanguage || (ExecutableCodeLanguage = {}));
-var Outcome;
-(function(Outcome2) {
-  Outcome2["OUTCOME_UNSPECIFIED"] = "outcome_unspecified";
-  Outcome2["OUTCOME_OK"] = "outcome_ok";
-  Outcome2["OUTCOME_FAILED"] = "outcome_failed";
-  Outcome2["OUTCOME_DEADLINE_EXCEEDED"] = "outcome_deadline_exceeded";
-})(Outcome || (Outcome = {}));
-var POSSIBLE_ROLES = ["user", "model", "function", "system"];
+// ../node_modules/.pnpm/@google+generative-ai@0.2.1/node_modules/@google/generative-ai/dist/index.mjs
 var HarmCategory;
 (function(HarmCategory2) {
   HarmCategory2["HARM_CATEGORY_UNSPECIFIED"] = "HARM_CATEGORY_UNSPECIFIED";
@@ -7993,7 +6530,6 @@ var HarmCategory;
   HarmCategory2["HARM_CATEGORY_SEXUALLY_EXPLICIT"] = "HARM_CATEGORY_SEXUALLY_EXPLICIT";
   HarmCategory2["HARM_CATEGORY_HARASSMENT"] = "HARM_CATEGORY_HARASSMENT";
   HarmCategory2["HARM_CATEGORY_DANGEROUS_CONTENT"] = "HARM_CATEGORY_DANGEROUS_CONTENT";
-  HarmCategory2["HARM_CATEGORY_CIVIC_INTEGRITY"] = "HARM_CATEGORY_CIVIC_INTEGRITY";
 })(HarmCategory || (HarmCategory = {}));
 var HarmBlockThreshold;
 (function(HarmBlockThreshold2) {
@@ -8024,11 +6560,6 @@ var FinishReason;
   FinishReason2["MAX_TOKENS"] = "MAX_TOKENS";
   FinishReason2["SAFETY"] = "SAFETY";
   FinishReason2["RECITATION"] = "RECITATION";
-  FinishReason2["LANGUAGE"] = "LANGUAGE";
-  FinishReason2["BLOCKLIST"] = "BLOCKLIST";
-  FinishReason2["PROHIBITED_CONTENT"] = "PROHIBITED_CONTENT";
-  FinishReason2["SPII"] = "SPII";
-  FinishReason2["MALFORMED_FUNCTION_CALL"] = "MALFORMED_FUNCTION_CALL";
   FinishReason2["OTHER"] = "OTHER";
 })(FinishReason || (FinishReason = {}));
 var TaskType;
@@ -8040,18 +6571,6 @@ var TaskType;
   TaskType2["CLASSIFICATION"] = "CLASSIFICATION";
   TaskType2["CLUSTERING"] = "CLUSTERING";
 })(TaskType || (TaskType = {}));
-var FunctionCallingMode;
-(function(FunctionCallingMode2) {
-  FunctionCallingMode2["MODE_UNSPECIFIED"] = "MODE_UNSPECIFIED";
-  FunctionCallingMode2["AUTO"] = "AUTO";
-  FunctionCallingMode2["ANY"] = "ANY";
-  FunctionCallingMode2["NONE"] = "NONE";
-})(FunctionCallingMode || (FunctionCallingMode = {}));
-var DynamicRetrievalMode;
-(function(DynamicRetrievalMode2) {
-  DynamicRetrievalMode2["MODE_UNSPECIFIED"] = "MODE_UNSPECIFIED";
-  DynamicRetrievalMode2["MODE_DYNAMIC"] = "MODE_DYNAMIC";
-})(DynamicRetrievalMode || (DynamicRetrievalMode = {}));
 var GoogleGenerativeAIError = class extends Error {
   static {
     __name(this, "GoogleGenerativeAIError");
@@ -8069,30 +6588,9 @@ var GoogleGenerativeAIResponseError = class extends GoogleGenerativeAIError {
     this.response = response;
   }
 };
-var GoogleGenerativeAIFetchError = class extends GoogleGenerativeAIError {
-  static {
-    __name(this, "GoogleGenerativeAIFetchError");
-  }
-  constructor(message, status, statusText, errorDetails) {
-    super(message);
-    this.status = status;
-    this.statusText = statusText;
-    this.errorDetails = errorDetails;
-  }
-};
-var GoogleGenerativeAIRequestInputError = class extends GoogleGenerativeAIError {
-  static {
-    __name(this, "GoogleGenerativeAIRequestInputError");
-  }
-};
-var GoogleGenerativeAIAbortError = class extends GoogleGenerativeAIError {
-  static {
-    __name(this, "GoogleGenerativeAIAbortError");
-  }
-};
-var DEFAULT_BASE_URL = "https://generativelanguage.googleapis.com";
-var DEFAULT_API_VERSION = "v1beta";
-var PACKAGE_VERSION = "0.24.1";
+var BASE_URL = "https://generativelanguage.googleapis.com";
+var API_VERSION = "v1";
+var PACKAGE_VERSION = "0.2.1";
 var PACKAGE_LOG_HEADER = "genai-js";
 var Task;
 (function(Task2) {
@@ -8106,126 +6604,59 @@ var RequestUrl = class {
   static {
     __name(this, "RequestUrl");
   }
-  constructor(model, task, apiKey, stream, requestOptions) {
+  constructor(model, task, apiKey, stream) {
     this.model = model;
     this.task = task;
     this.apiKey = apiKey;
     this.stream = stream;
-    this.requestOptions = requestOptions;
   }
   toString() {
-    var _a, _b;
-    const apiVersion = ((_a = this.requestOptions) === null || _a === void 0 ? void 0 : _a.apiVersion) || DEFAULT_API_VERSION;
-    const baseUrl = ((_b = this.requestOptions) === null || _b === void 0 ? void 0 : _b.baseUrl) || DEFAULT_BASE_URL;
-    let url = `${baseUrl}/${apiVersion}/${this.model}:${this.task}`;
+    let url = `${BASE_URL}/${API_VERSION}/${this.model}:${this.task}`;
     if (this.stream) {
       url += "?alt=sse";
     }
     return url;
   }
 };
-function getClientHeaders(requestOptions) {
-  const clientHeaders = [];
-  if (requestOptions === null || requestOptions === void 0 ? void 0 : requestOptions.apiClient) {
-    clientHeaders.push(requestOptions.apiClient);
-  }
-  clientHeaders.push(`${PACKAGE_LOG_HEADER}/${PACKAGE_VERSION}`);
-  return clientHeaders.join(" ");
+function getClientHeaders() {
+  return `${PACKAGE_LOG_HEADER}/${PACKAGE_VERSION}`;
 }
 __name(getClientHeaders, "getClientHeaders");
-async function getHeaders(url) {
-  var _a;
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
-  headers.append("x-goog-api-client", getClientHeaders(url.requestOptions));
-  headers.append("x-goog-api-key", url.apiKey);
-  let customHeaders = (_a = url.requestOptions) === null || _a === void 0 ? void 0 : _a.customHeaders;
-  if (customHeaders) {
-    if (!(customHeaders instanceof Headers)) {
-      try {
-        customHeaders = new Headers(customHeaders);
-      } catch (e) {
-        throw new GoogleGenerativeAIRequestInputError(`unable to convert customHeaders value ${JSON.stringify(customHeaders)} to Headers: ${e.message}`);
-      }
-    }
-    for (const [headerName, headerValue] of customHeaders.entries()) {
-      if (headerName === "x-goog-api-key") {
-        throw new GoogleGenerativeAIRequestInputError(`Cannot set reserved header name ${headerName}`);
-      } else if (headerName === "x-goog-api-client") {
-        throw new GoogleGenerativeAIRequestInputError(`Header name ${headerName} can only be set using the apiClient field`);
-      }
-      headers.append(headerName, headerValue);
-    }
-  }
-  return headers;
-}
-__name(getHeaders, "getHeaders");
-async function constructModelRequest(model, task, apiKey, stream, body, requestOptions) {
-  const url = new RequestUrl(model, task, apiKey, stream, requestOptions);
-  return {
-    url: url.toString(),
-    fetchOptions: Object.assign(Object.assign({}, buildFetchOptions(requestOptions)), { method: "POST", headers: await getHeaders(url), body })
-  };
-}
-__name(constructModelRequest, "constructModelRequest");
-async function makeModelRequest(model, task, apiKey, stream, body, requestOptions = {}, fetchFn = fetch) {
-  const { url, fetchOptions } = await constructModelRequest(model, task, apiKey, stream, body, requestOptions);
-  return makeRequest(url, fetchOptions, fetchFn);
-}
-__name(makeModelRequest, "makeModelRequest");
-async function makeRequest(url, fetchOptions, fetchFn = fetch) {
+async function makeRequest(url, body, requestOptions) {
   let response;
   try {
-    response = await fetchFn(url, fetchOptions);
+    response = await fetch(url.toString(), Object.assign(Object.assign({}, buildFetchOptions(requestOptions)), { method: "POST", headers: {
+      "Content-Type": "application/json",
+      "x-goog-api-client": getClientHeaders(),
+      "x-goog-api-key": url.apiKey
+    }, body }));
+    if (!response.ok) {
+      let message = "";
+      try {
+        const json = await response.json();
+        message = json.error.message;
+        if (json.error.details) {
+          message += ` ${JSON.stringify(json.error.details)}`;
+        }
+      } catch (e) {
+      }
+      throw new Error(`[${response.status} ${response.statusText}] ${message}`);
+    }
   } catch (e) {
-    handleResponseError(e, url);
-  }
-  if (!response.ok) {
-    await handleResponseNotOk(response, url);
+    const err = new GoogleGenerativeAIError(`Error fetching from ${url.toString()}: ${e.message}`);
+    err.stack = e.stack;
+    throw err;
   }
   return response;
 }
 __name(makeRequest, "makeRequest");
-function handleResponseError(e, url) {
-  let err = e;
-  if (err.name === "AbortError") {
-    err = new GoogleGenerativeAIAbortError(`Request aborted when fetching ${url.toString()}: ${e.message}`);
-    err.stack = e.stack;
-  } else if (!(e instanceof GoogleGenerativeAIFetchError || e instanceof GoogleGenerativeAIRequestInputError)) {
-    err = new GoogleGenerativeAIError(`Error fetching from ${url.toString()}: ${e.message}`);
-    err.stack = e.stack;
-  }
-  throw err;
-}
-__name(handleResponseError, "handleResponseError");
-async function handleResponseNotOk(response, url) {
-  let message = "";
-  let errorDetails;
-  try {
-    const json = await response.json();
-    message = json.error.message;
-    if (json.error.details) {
-      message += ` ${JSON.stringify(json.error.details)}`;
-      errorDetails = json.error.details;
-    }
-  } catch (e) {
-  }
-  throw new GoogleGenerativeAIFetchError(`Error fetching from ${url.toString()}: [${response.status} ${response.statusText}] ${message}`, response.status, response.statusText, errorDetails);
-}
-__name(handleResponseNotOk, "handleResponseNotOk");
 function buildFetchOptions(requestOptions) {
   const fetchOptions = {};
-  if ((requestOptions === null || requestOptions === void 0 ? void 0 : requestOptions.signal) !== void 0 || (requestOptions === null || requestOptions === void 0 ? void 0 : requestOptions.timeout) >= 0) {
-    const controller = new AbortController();
-    if ((requestOptions === null || requestOptions === void 0 ? void 0 : requestOptions.timeout) >= 0) {
-      setTimeout(() => controller.abort(), requestOptions.timeout);
-    }
-    if (requestOptions === null || requestOptions === void 0 ? void 0 : requestOptions.signal) {
-      requestOptions.signal.addEventListener("abort", () => {
-        controller.abort();
-      });
-    }
-    fetchOptions.signal = controller.signal;
+  if ((requestOptions === null || requestOptions === void 0 ? void 0 : requestOptions.timeout) >= 0) {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    setTimeout(() => abortController.abort(), requestOptions.timeout);
+    fetchOptions.signal = signal;
   }
   return fetchOptions;
 }
@@ -8245,83 +6676,19 @@ function addHelpers(response) {
     }
     return "";
   };
-  response.functionCall = () => {
-    if (response.candidates && response.candidates.length > 0) {
-      if (response.candidates.length > 1) {
-        console.warn(`This response had ${response.candidates.length} candidates. Returning function calls from the first candidate only. Access response.candidates directly to use the other candidates.`);
-      }
-      if (hadBadFinishReason(response.candidates[0])) {
-        throw new GoogleGenerativeAIResponseError(`${formatBlockErrorMessage(response)}`, response);
-      }
-      console.warn(`response.functionCall() is deprecated. Use response.functionCalls() instead.`);
-      return getFunctionCalls(response)[0];
-    } else if (response.promptFeedback) {
-      throw new GoogleGenerativeAIResponseError(`Function call not available. ${formatBlockErrorMessage(response)}`, response);
-    }
-    return void 0;
-  };
-  response.functionCalls = () => {
-    if (response.candidates && response.candidates.length > 0) {
-      if (response.candidates.length > 1) {
-        console.warn(`This response had ${response.candidates.length} candidates. Returning function calls from the first candidate only. Access response.candidates directly to use the other candidates.`);
-      }
-      if (hadBadFinishReason(response.candidates[0])) {
-        throw new GoogleGenerativeAIResponseError(`${formatBlockErrorMessage(response)}`, response);
-      }
-      return getFunctionCalls(response);
-    } else if (response.promptFeedback) {
-      throw new GoogleGenerativeAIResponseError(`Function call not available. ${formatBlockErrorMessage(response)}`, response);
-    }
-    return void 0;
-  };
   return response;
 }
 __name(addHelpers, "addHelpers");
 function getText(response) {
   var _a, _b, _c, _d;
-  const textStrings = [];
-  if ((_b = (_a = response.candidates) === null || _a === void 0 ? void 0 : _a[0].content) === null || _b === void 0 ? void 0 : _b.parts) {
-    for (const part of (_d = (_c = response.candidates) === null || _c === void 0 ? void 0 : _c[0].content) === null || _d === void 0 ? void 0 : _d.parts) {
-      if (part.text) {
-        textStrings.push(part.text);
-      }
-      if (part.executableCode) {
-        textStrings.push("\n```" + part.executableCode.language + "\n" + part.executableCode.code + "\n```\n");
-      }
-      if (part.codeExecutionResult) {
-        textStrings.push("\n```\n" + part.codeExecutionResult.output + "\n```\n");
-      }
-    }
-  }
-  if (textStrings.length > 0) {
-    return textStrings.join("");
+  if ((_d = (_c = (_b = (_a = response.candidates) === null || _a === void 0 ? void 0 : _a[0].content) === null || _b === void 0 ? void 0 : _b.parts) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.text) {
+    return response.candidates[0].content.parts[0].text;
   } else {
     return "";
   }
 }
 __name(getText, "getText");
-function getFunctionCalls(response) {
-  var _a, _b, _c, _d;
-  const functionCalls = [];
-  if ((_b = (_a = response.candidates) === null || _a === void 0 ? void 0 : _a[0].content) === null || _b === void 0 ? void 0 : _b.parts) {
-    for (const part of (_d = (_c = response.candidates) === null || _c === void 0 ? void 0 : _c[0].content) === null || _d === void 0 ? void 0 : _d.parts) {
-      if (part.functionCall) {
-        functionCalls.push(part.functionCall);
-      }
-    }
-  }
-  if (functionCalls.length > 0) {
-    return functionCalls;
-  } else {
-    return void 0;
-  }
-}
-__name(getFunctionCalls, "getFunctionCalls");
-var badFinishReasons = [
-  FinishReason.RECITATION,
-  FinishReason.SAFETY,
-  FinishReason.LANGUAGE
-];
+var badFinishReasons = [FinishReason.RECITATION, FinishReason.SAFETY];
 function hadBadFinishReason(candidate) {
   return !!candidate.finishReason && badFinishReasons.includes(candidate.finishReason);
 }
@@ -8460,15 +6827,6 @@ function getResponseStream(inputStream) {
             match2 = currentText.match(responseLineRE);
           }
           return pump();
-        }).catch((e) => {
-          let err = e;
-          err.stack = e.stack;
-          if (err.name === "AbortError") {
-            err = new GoogleGenerativeAIAbortError("Request aborted when reading from the stream");
-          } else {
-            err = new GoogleGenerativeAIError("Error reading from the stream");
-          }
-          throw err;
         });
       }
       __name(pump, "pump");
@@ -8484,81 +6842,60 @@ function aggregateResponses(responses) {
   };
   for (const response of responses) {
     if (response.candidates) {
-      let candidateIndex = 0;
       for (const candidate of response.candidates) {
+        const i = candidate.index;
         if (!aggregatedResponse.candidates) {
           aggregatedResponse.candidates = [];
         }
-        if (!aggregatedResponse.candidates[candidateIndex]) {
-          aggregatedResponse.candidates[candidateIndex] = {
-            index: candidateIndex
+        if (!aggregatedResponse.candidates[i]) {
+          aggregatedResponse.candidates[i] = {
+            index: candidate.index
           };
         }
-        aggregatedResponse.candidates[candidateIndex].citationMetadata = candidate.citationMetadata;
-        aggregatedResponse.candidates[candidateIndex].groundingMetadata = candidate.groundingMetadata;
-        aggregatedResponse.candidates[candidateIndex].finishReason = candidate.finishReason;
-        aggregatedResponse.candidates[candidateIndex].finishMessage = candidate.finishMessage;
-        aggregatedResponse.candidates[candidateIndex].safetyRatings = candidate.safetyRatings;
+        aggregatedResponse.candidates[i].citationMetadata = candidate.citationMetadata;
+        aggregatedResponse.candidates[i].finishReason = candidate.finishReason;
+        aggregatedResponse.candidates[i].finishMessage = candidate.finishMessage;
+        aggregatedResponse.candidates[i].safetyRatings = candidate.safetyRatings;
         if (candidate.content && candidate.content.parts) {
-          if (!aggregatedResponse.candidates[candidateIndex].content) {
-            aggregatedResponse.candidates[candidateIndex].content = {
+          if (!aggregatedResponse.candidates[i].content) {
+            aggregatedResponse.candidates[i].content = {
               role: candidate.content.role || "user",
-              parts: []
+              parts: [{ text: "" }]
             };
           }
-          const newPart = {};
           for (const part of candidate.content.parts) {
             if (part.text) {
-              newPart.text = part.text;
+              aggregatedResponse.candidates[i].content.parts[0].text += part.text;
             }
-            if (part.functionCall) {
-              newPart.functionCall = part.functionCall;
-            }
-            if (part.executableCode) {
-              newPart.executableCode = part.executableCode;
-            }
-            if (part.codeExecutionResult) {
-              newPart.codeExecutionResult = part.codeExecutionResult;
-            }
-            if (Object.keys(newPart).length === 0) {
-              newPart.text = "";
-            }
-            aggregatedResponse.candidates[candidateIndex].content.parts.push(newPart);
           }
         }
       }
-      candidateIndex++;
-    }
-    if (response.usageMetadata) {
-      aggregatedResponse.usageMetadata = response.usageMetadata;
     }
   }
   return aggregatedResponse;
 }
 __name(aggregateResponses, "aggregateResponses");
 async function generateContentStream(apiKey, model, params, requestOptions) {
-  const response = await makeModelRequest(
+  const url = new RequestUrl(
     model,
     Task.STREAM_GENERATE_CONTENT,
     apiKey,
     /* stream */
-    true,
-    JSON.stringify(params),
-    requestOptions
+    true
   );
+  const response = await makeRequest(url, JSON.stringify(params), requestOptions);
   return processStream(response);
 }
 __name(generateContentStream, "generateContentStream");
 async function generateContent(apiKey, model, params, requestOptions) {
-  const response = await makeModelRequest(
+  const url = new RequestUrl(
     model,
     Task.GENERATE_CONTENT,
     apiKey,
     /* stream */
-    false,
-    JSON.stringify(params),
-    requestOptions
+    false
   );
+  const response = await makeRequest(url, JSON.stringify(params), requestOptions);
   const responseJson = await response.json();
   const enhancedResponse = addHelpers(responseJson);
   return {
@@ -8566,23 +6903,7 @@ async function generateContent(apiKey, model, params, requestOptions) {
   };
 }
 __name(generateContent, "generateContent");
-function formatSystemInstruction(input) {
-  if (input == null) {
-    return void 0;
-  } else if (typeof input === "string") {
-    return { role: "system", parts: [{ text: input }] };
-  } else if (input.text) {
-    return { role: "system", parts: [input] };
-  } else if (input.parts) {
-    if (!input.role) {
-      return { role: "system", parts: input.parts };
-    } else {
-      return input;
-    }
-  }
-}
-__name(formatSystemInstruction, "formatSystemInstruction");
-function formatNewContent(request) {
+function formatNewContent(request, role) {
   let newParts = [];
   if (typeof request === "string") {
     newParts = [{ text: request }];
@@ -8595,179 +6916,45 @@ function formatNewContent(request) {
       }
     }
   }
-  return assignRoleToPartsAndValidateSendMessageRequest(newParts);
+  return { role, parts: newParts };
 }
 __name(formatNewContent, "formatNewContent");
-function assignRoleToPartsAndValidateSendMessageRequest(parts) {
-  const userContent = { role: "user", parts: [] };
-  const functionContent = { role: "function", parts: [] };
-  let hasUserContent = false;
-  let hasFunctionContent = false;
-  for (const part of parts) {
-    if ("functionResponse" in part) {
-      functionContent.parts.push(part);
-      hasFunctionContent = true;
-    } else {
-      userContent.parts.push(part);
-      hasUserContent = true;
-    }
-  }
-  if (hasUserContent && hasFunctionContent) {
-    throw new GoogleGenerativeAIError("Within a single message, FunctionResponse cannot be mixed with other type of part in the request for sending chat message.");
-  }
-  if (!hasUserContent && !hasFunctionContent) {
-    throw new GoogleGenerativeAIError("No content is provided for sending chat message.");
-  }
-  if (hasUserContent) {
-    return userContent;
-  }
-  return functionContent;
-}
-__name(assignRoleToPartsAndValidateSendMessageRequest, "assignRoleToPartsAndValidateSendMessageRequest");
-function formatCountTokensInput(params, modelParams) {
-  var _a;
-  let formattedGenerateContentRequest = {
-    model: modelParams === null || modelParams === void 0 ? void 0 : modelParams.model,
-    generationConfig: modelParams === null || modelParams === void 0 ? void 0 : modelParams.generationConfig,
-    safetySettings: modelParams === null || modelParams === void 0 ? void 0 : modelParams.safetySettings,
-    tools: modelParams === null || modelParams === void 0 ? void 0 : modelParams.tools,
-    toolConfig: modelParams === null || modelParams === void 0 ? void 0 : modelParams.toolConfig,
-    systemInstruction: modelParams === null || modelParams === void 0 ? void 0 : modelParams.systemInstruction,
-    cachedContent: (_a = modelParams === null || modelParams === void 0 ? void 0 : modelParams.cachedContent) === null || _a === void 0 ? void 0 : _a.name,
-    contents: []
-  };
-  const containsGenerateContentRequest = params.generateContentRequest != null;
-  if (params.contents) {
-    if (containsGenerateContentRequest) {
-      throw new GoogleGenerativeAIRequestInputError("CountTokensRequest must have one of contents or generateContentRequest, not both.");
-    }
-    formattedGenerateContentRequest.contents = params.contents;
-  } else if (containsGenerateContentRequest) {
-    formattedGenerateContentRequest = Object.assign(Object.assign({}, formattedGenerateContentRequest), params.generateContentRequest);
-  } else {
-    const content = formatNewContent(params);
-    formattedGenerateContentRequest.contents = [content];
-  }
-  return { generateContentRequest: formattedGenerateContentRequest };
-}
-__name(formatCountTokensInput, "formatCountTokensInput");
 function formatGenerateContentInput(params) {
-  let formattedRequest;
   if (params.contents) {
-    formattedRequest = params;
+    return params;
   } else {
-    const content = formatNewContent(params);
-    formattedRequest = { contents: [content] };
+    const content = formatNewContent(params, "user");
+    return { contents: [content] };
   }
-  if (params.systemInstruction) {
-    formattedRequest.systemInstruction = formatSystemInstruction(params.systemInstruction);
-  }
-  return formattedRequest;
 }
 __name(formatGenerateContentInput, "formatGenerateContentInput");
 function formatEmbedContentInput(params) {
   if (typeof params === "string" || Array.isArray(params)) {
-    const content = formatNewContent(params);
+    const content = formatNewContent(params, "user");
     return { content };
   }
   return params;
 }
 __name(formatEmbedContentInput, "formatEmbedContentInput");
-var VALID_PART_FIELDS = [
-  "text",
-  "inlineData",
-  "functionCall",
-  "functionResponse",
-  "executableCode",
-  "codeExecutionResult"
-];
-var VALID_PARTS_PER_ROLE = {
-  user: ["text", "inlineData"],
-  function: ["functionResponse"],
-  model: ["text", "functionCall", "executableCode", "codeExecutionResult"],
-  // System instructions shouldn't be in history anyway.
-  system: ["text"]
-};
-function validateChatHistory(history) {
-  let prevContent = false;
-  for (const currContent of history) {
-    const { role, parts } = currContent;
-    if (!prevContent && role !== "user") {
-      throw new GoogleGenerativeAIError(`First content should be with role 'user', got ${role}`);
-    }
-    if (!POSSIBLE_ROLES.includes(role)) {
-      throw new GoogleGenerativeAIError(`Each item should include role field. Got ${role} but valid roles are: ${JSON.stringify(POSSIBLE_ROLES)}`);
-    }
-    if (!Array.isArray(parts)) {
-      throw new GoogleGenerativeAIError("Content should have 'parts' property with an array of Parts");
-    }
-    if (parts.length === 0) {
-      throw new GoogleGenerativeAIError("Each Content should have at least one part");
-    }
-    const countFields = {
-      text: 0,
-      inlineData: 0,
-      functionCall: 0,
-      functionResponse: 0,
-      fileData: 0,
-      executableCode: 0,
-      codeExecutionResult: 0
-    };
-    for (const part of parts) {
-      for (const key of VALID_PART_FIELDS) {
-        if (key in part) {
-          countFields[key] += 1;
-        }
-      }
-    }
-    const validParts = VALID_PARTS_PER_ROLE[role];
-    for (const key of VALID_PART_FIELDS) {
-      if (!validParts.includes(key) && countFields[key] > 0) {
-        throw new GoogleGenerativeAIError(`Content with role '${role}' can't contain '${key}' part`);
-      }
-    }
-    prevContent = true;
-  }
-}
-__name(validateChatHistory, "validateChatHistory");
-function isValidResponse(response) {
-  var _a;
-  if (response.candidates === void 0 || response.candidates.length === 0) {
-    return false;
-  }
-  const content = (_a = response.candidates[0]) === null || _a === void 0 ? void 0 : _a.content;
-  if (content === void 0) {
-    return false;
-  }
-  if (content.parts === void 0 || content.parts.length === 0) {
-    return false;
-  }
-  for (const part of content.parts) {
-    if (part === void 0 || Object.keys(part).length === 0) {
-      return false;
-    }
-    if (part.text !== void 0 && part.text === "") {
-      return false;
-    }
-  }
-  return true;
-}
-__name(isValidResponse, "isValidResponse");
 var SILENT_ERROR = "SILENT_ERROR";
 var ChatSession = class {
   static {
     __name(this, "ChatSession");
   }
-  constructor(apiKey, model, params, _requestOptions = {}) {
+  constructor(apiKey, model, params, requestOptions) {
     this.model = model;
     this.params = params;
-    this._requestOptions = _requestOptions;
+    this.requestOptions = requestOptions;
     this._history = [];
     this._sendPromise = Promise.resolve();
     this._apiKey = apiKey;
     if (params === null || params === void 0 ? void 0 : params.history) {
-      validateChatHistory(params.history);
-      this._history = params.history;
+      this._history = params.history.map((content) => {
+        if (!content.role) {
+          throw new Error("Missing role for history item: " + JSON.stringify(content));
+        }
+        return formatNewContent(content.parts, content.role);
+      });
     }
   }
   /**
@@ -8781,30 +6968,21 @@ var ChatSession = class {
   }
   /**
    * Sends a chat message and receives a non-streaming
-   * {@link GenerateContentResult}.
-   *
-   * Fields set in the optional {@link SingleRequestOptions} parameter will
-   * take precedence over the {@link RequestOptions} values provided to
-   * {@link GoogleGenerativeAI.getGenerativeModel }.
+   * {@link GenerateContentResult}
    */
-  async sendMessage(request, requestOptions = {}) {
-    var _a, _b, _c, _d, _e, _f;
+  async sendMessage(request) {
+    var _a, _b;
     await this._sendPromise;
-    const newContent = formatNewContent(request);
+    const newContent = formatNewContent(request, "user");
     const generateContentRequest = {
       safetySettings: (_a = this.params) === null || _a === void 0 ? void 0 : _a.safetySettings,
       generationConfig: (_b = this.params) === null || _b === void 0 ? void 0 : _b.generationConfig,
-      tools: (_c = this.params) === null || _c === void 0 ? void 0 : _c.tools,
-      toolConfig: (_d = this.params) === null || _d === void 0 ? void 0 : _d.toolConfig,
-      systemInstruction: (_e = this.params) === null || _e === void 0 ? void 0 : _e.systemInstruction,
-      cachedContent: (_f = this.params) === null || _f === void 0 ? void 0 : _f.cachedContent,
       contents: [...this._history, newContent]
     };
-    const chatSessionRequestOptions = Object.assign(Object.assign({}, this._requestOptions), requestOptions);
     let finalResult;
-    this._sendPromise = this._sendPromise.then(() => generateContent(this._apiKey, this.model, generateContentRequest, chatSessionRequestOptions)).then((result) => {
+    this._sendPromise = this._sendPromise.then(() => generateContent(this._apiKey, this.model, generateContentRequest, this.requestOptions)).then((result) => {
       var _a2;
-      if (isValidResponse(result.response)) {
+      if (result.response.candidates && result.response.candidates.length > 0) {
         this._history.push(newContent);
         const responseContent = Object.assign({
           parts: [],
@@ -8819,9 +6997,6 @@ var ChatSession = class {
         }
       }
       finalResult = result;
-    }).catch((e) => {
-      this._sendPromise = Promise.resolve();
-      throw e;
     });
     await this._sendPromise;
     return finalResult;
@@ -8830,30 +7005,21 @@ var ChatSession = class {
    * Sends a chat message and receives the response as a
    * {@link GenerateContentStreamResult} containing an iterable stream
    * and a response promise.
-   *
-   * Fields set in the optional {@link SingleRequestOptions} parameter will
-   * take precedence over the {@link RequestOptions} values provided to
-   * {@link GoogleGenerativeAI.getGenerativeModel }.
    */
-  async sendMessageStream(request, requestOptions = {}) {
-    var _a, _b, _c, _d, _e, _f;
+  async sendMessageStream(request) {
+    var _a, _b;
     await this._sendPromise;
-    const newContent = formatNewContent(request);
+    const newContent = formatNewContent(request, "user");
     const generateContentRequest = {
       safetySettings: (_a = this.params) === null || _a === void 0 ? void 0 : _a.safetySettings,
       generationConfig: (_b = this.params) === null || _b === void 0 ? void 0 : _b.generationConfig,
-      tools: (_c = this.params) === null || _c === void 0 ? void 0 : _c.tools,
-      toolConfig: (_d = this.params) === null || _d === void 0 ? void 0 : _d.toolConfig,
-      systemInstruction: (_e = this.params) === null || _e === void 0 ? void 0 : _e.systemInstruction,
-      cachedContent: (_f = this.params) === null || _f === void 0 ? void 0 : _f.cachedContent,
       contents: [...this._history, newContent]
     };
-    const chatSessionRequestOptions = Object.assign(Object.assign({}, this._requestOptions), requestOptions);
-    const streamPromise = generateContentStream(this._apiKey, this.model, generateContentRequest, chatSessionRequestOptions);
+    const streamPromise = generateContentStream(this._apiKey, this.model, generateContentRequest, this.requestOptions);
     this._sendPromise = this._sendPromise.then(() => streamPromise).catch((_ignored) => {
       throw new Error(SILENT_ERROR);
     }).then((streamResult) => streamResult.response).then((response) => {
-      if (isValidResponse(response)) {
+      if (response.candidates && response.candidates.length > 0) {
         this._history.push(newContent);
         const responseContent = Object.assign({}, response.candidates[0].content);
         if (!responseContent.role) {
@@ -8874,21 +7040,24 @@ var ChatSession = class {
     return streamPromise;
   }
 };
-async function countTokens(apiKey, model, params, singleRequestOptions) {
-  const response = await makeModelRequest(model, Task.COUNT_TOKENS, apiKey, false, JSON.stringify(params), singleRequestOptions);
+async function countTokens(apiKey, model, params, requestOptions) {
+  const url = new RequestUrl(model, Task.COUNT_TOKENS, apiKey, false);
+  const response = await makeRequest(url, JSON.stringify(Object.assign(Object.assign({}, params), { model })), requestOptions);
   return response.json();
 }
 __name(countTokens, "countTokens");
 async function embedContent(apiKey, model, params, requestOptions) {
-  const response = await makeModelRequest(model, Task.EMBED_CONTENT, apiKey, false, JSON.stringify(params), requestOptions);
+  const url = new RequestUrl(model, Task.EMBED_CONTENT, apiKey, false);
+  const response = await makeRequest(url, JSON.stringify(params), requestOptions);
   return response.json();
 }
 __name(embedContent, "embedContent");
 async function batchEmbedContents(apiKey, model, params, requestOptions) {
+  const url = new RequestUrl(model, Task.BATCH_EMBED_CONTENTS, apiKey, false);
   const requestsWithModel = params.requests.map((request) => {
     return Object.assign(Object.assign({}, request), { model });
   });
-  const response = await makeModelRequest(model, Task.BATCH_EMBED_CONTENTS, apiKey, false, JSON.stringify({ requests: requestsWithModel }), requestOptions);
+  const response = await makeRequest(url, JSON.stringify({ requests: requestsWithModel }), requestOptions);
   return response.json();
 }
 __name(batchEmbedContents, "batchEmbedContents");
@@ -8896,9 +7065,8 @@ var GenerativeModel = class {
   static {
     __name(this, "GenerativeModel");
   }
-  constructor(apiKey, modelParams, _requestOptions = {}) {
+  constructor(apiKey, modelParams, requestOptions) {
     this.apiKey = apiKey;
-    this._requestOptions = _requestOptions;
     if (modelParams.model.includes("/")) {
       this.model = modelParams.model;
     } else {
@@ -8906,91 +7074,52 @@ var GenerativeModel = class {
     }
     this.generationConfig = modelParams.generationConfig || {};
     this.safetySettings = modelParams.safetySettings || [];
-    this.tools = modelParams.tools;
-    this.toolConfig = modelParams.toolConfig;
-    this.systemInstruction = formatSystemInstruction(modelParams.systemInstruction);
-    this.cachedContent = modelParams.cachedContent;
+    this.requestOptions = requestOptions || {};
   }
   /**
    * Makes a single non-streaming call to the model
    * and returns an object containing a single {@link GenerateContentResponse}.
-   *
-   * Fields set in the optional {@link SingleRequestOptions} parameter will
-   * take precedence over the {@link RequestOptions} values provided to
-   * {@link GoogleGenerativeAI.getGenerativeModel }.
    */
-  async generateContent(request, requestOptions = {}) {
-    var _a;
+  async generateContent(request) {
     const formattedParams = formatGenerateContentInput(request);
-    const generativeModelRequestOptions = Object.assign(Object.assign({}, this._requestOptions), requestOptions);
-    return generateContent(this.apiKey, this.model, Object.assign({ generationConfig: this.generationConfig, safetySettings: this.safetySettings, tools: this.tools, toolConfig: this.toolConfig, systemInstruction: this.systemInstruction, cachedContent: (_a = this.cachedContent) === null || _a === void 0 ? void 0 : _a.name }, formattedParams), generativeModelRequestOptions);
+    return generateContent(this.apiKey, this.model, Object.assign({ generationConfig: this.generationConfig, safetySettings: this.safetySettings }, formattedParams), this.requestOptions);
   }
   /**
-   * Makes a single streaming call to the model and returns an object
-   * containing an iterable stream that iterates over all chunks in the
-   * streaming response as well as a promise that returns the final
-   * aggregated response.
-   *
-   * Fields set in the optional {@link SingleRequestOptions} parameter will
-   * take precedence over the {@link RequestOptions} values provided to
-   * {@link GoogleGenerativeAI.getGenerativeModel }.
+   * Makes a single streaming call to the model
+   * and returns an object containing an iterable stream that iterates
+   * over all chunks in the streaming response as well as
+   * a promise that returns the final aggregated response.
    */
-  async generateContentStream(request, requestOptions = {}) {
-    var _a;
+  async generateContentStream(request) {
     const formattedParams = formatGenerateContentInput(request);
-    const generativeModelRequestOptions = Object.assign(Object.assign({}, this._requestOptions), requestOptions);
-    return generateContentStream(this.apiKey, this.model, Object.assign({ generationConfig: this.generationConfig, safetySettings: this.safetySettings, tools: this.tools, toolConfig: this.toolConfig, systemInstruction: this.systemInstruction, cachedContent: (_a = this.cachedContent) === null || _a === void 0 ? void 0 : _a.name }, formattedParams), generativeModelRequestOptions);
+    return generateContentStream(this.apiKey, this.model, Object.assign({ generationConfig: this.generationConfig, safetySettings: this.safetySettings }, formattedParams), this.requestOptions);
   }
   /**
    * Gets a new {@link ChatSession} instance which can be used for
    * multi-turn chats.
    */
   startChat(startChatParams) {
-    var _a;
-    return new ChatSession(this.apiKey, this.model, Object.assign({ generationConfig: this.generationConfig, safetySettings: this.safetySettings, tools: this.tools, toolConfig: this.toolConfig, systemInstruction: this.systemInstruction, cachedContent: (_a = this.cachedContent) === null || _a === void 0 ? void 0 : _a.name }, startChatParams), this._requestOptions);
+    return new ChatSession(this.apiKey, this.model, startChatParams, this.requestOptions);
   }
   /**
    * Counts the tokens in the provided request.
-   *
-   * Fields set in the optional {@link SingleRequestOptions} parameter will
-   * take precedence over the {@link RequestOptions} values provided to
-   * {@link GoogleGenerativeAI.getGenerativeModel }.
    */
-  async countTokens(request, requestOptions = {}) {
-    const formattedParams = formatCountTokensInput(request, {
-      model: this.model,
-      generationConfig: this.generationConfig,
-      safetySettings: this.safetySettings,
-      tools: this.tools,
-      toolConfig: this.toolConfig,
-      systemInstruction: this.systemInstruction,
-      cachedContent: this.cachedContent
-    });
-    const generativeModelRequestOptions = Object.assign(Object.assign({}, this._requestOptions), requestOptions);
-    return countTokens(this.apiKey, this.model, formattedParams, generativeModelRequestOptions);
+  async countTokens(request) {
+    const formattedParams = formatGenerateContentInput(request);
+    return countTokens(this.apiKey, this.model, formattedParams);
   }
   /**
    * Embeds the provided content.
-   *
-   * Fields set in the optional {@link SingleRequestOptions} parameter will
-   * take precedence over the {@link RequestOptions} values provided to
-   * {@link GoogleGenerativeAI.getGenerativeModel }.
    */
-  async embedContent(request, requestOptions = {}) {
+  async embedContent(request) {
     const formattedParams = formatEmbedContentInput(request);
-    const generativeModelRequestOptions = Object.assign(Object.assign({}, this._requestOptions), requestOptions);
-    return embedContent(this.apiKey, this.model, formattedParams, generativeModelRequestOptions);
+    return embedContent(this.apiKey, this.model, formattedParams);
   }
   /**
    * Embeds an array of {@link EmbedContentRequest}s.
-   *
-   * Fields set in the optional {@link SingleRequestOptions} parameter will
-   * take precedence over the {@link RequestOptions} values provided to
-   * {@link GoogleGenerativeAI.getGenerativeModel }.
    */
-  async batchEmbedContents(batchEmbedContentRequest, requestOptions = {}) {
-    const generativeModelRequestOptions = Object.assign(Object.assign({}, this._requestOptions), requestOptions);
-    return batchEmbedContents(this.apiKey, this.model, batchEmbedContentRequest, generativeModelRequestOptions);
+  async batchEmbedContents(batchEmbedContentRequest) {
+    return batchEmbedContents(this.apiKey, this.model, batchEmbedContentRequest, this.requestOptions);
   }
 };
 var GoogleGenerativeAI = class {
@@ -9008,32 +7137,6 @@ var GoogleGenerativeAI = class {
       throw new GoogleGenerativeAIError(`Must provide a model name. Example: genai.getGenerativeModel({ model: 'my-model-name' })`);
     }
     return new GenerativeModel(this.apiKey, modelParams, requestOptions);
-  }
-  /**
-   * Creates a {@link GenerativeModel} instance from provided content cache.
-   */
-  getGenerativeModelFromCachedContent(cachedContent, modelParams, requestOptions) {
-    if (!cachedContent.name) {
-      throw new GoogleGenerativeAIRequestInputError("Cached content must contain a `name` field.");
-    }
-    if (!cachedContent.model) {
-      throw new GoogleGenerativeAIRequestInputError("Cached content must contain a `model` field.");
-    }
-    const disallowedDuplicates = ["model", "systemInstruction"];
-    for (const key of disallowedDuplicates) {
-      if ((modelParams === null || modelParams === void 0 ? void 0 : modelParams[key]) && cachedContent[key] && (modelParams === null || modelParams === void 0 ? void 0 : modelParams[key]) !== cachedContent[key]) {
-        if (key === "model") {
-          const modelParamsComp = modelParams.model.startsWith("models/") ? modelParams.model.replace("models/", "") : modelParams.model;
-          const cachedContentComp = cachedContent.model.startsWith("models/") ? cachedContent.model.replace("models/", "") : cachedContent.model;
-          if (modelParamsComp === cachedContentComp) {
-            continue;
-          }
-        }
-        throw new GoogleGenerativeAIRequestInputError(`Different value for "${key}" specified in modelParams (${modelParams[key]}) and cachedContent (${cachedContent[key]})`);
-      }
-    }
-    const modelParamsFromCache = Object.assign(Object.assign({}, modelParams), { model: cachedContent.model, tools: cachedContent.tools, toolConfig: cachedContent.toolConfig, systemInstruction: cachedContent.systemInstruction, cachedContent });
-    return new GenerativeModel(this.apiKey, modelParamsFromCache, requestOptions);
   }
 };
 
@@ -9227,7 +7330,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// .wrangler/tmp/bundle-jYqMBb/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-HXio1x/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -9259,7 +7362,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-jYqMBb/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-HXio1x/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
@@ -9365,7 +7468,7 @@ export {
 @google/generative-ai/dist/index.mjs:
   (**
    * @license
-   * Copyright 2024 Google LLC
+   * Copyright 2023 Google LLC
    *
    * Licensed under the Apache License, Version 2.0 (the "License");
    * you may not use this file except in compliance with the License.
