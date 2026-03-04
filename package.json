@@ -1,0 +1,17 @@
+{
+  "name": "latauk-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy:worker": "cd backend && pnpm install && npx wrangler deploy",
+    "dev:worker": "cd backend && npx wrangler dev",
+    "dev:mobile": "cd mobile && pnpm start"
+  },
+  "workspaces": [
+    "backend",
+    "mobile"
+  ],
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
