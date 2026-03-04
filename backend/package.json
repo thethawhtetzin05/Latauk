@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "build": "exit 0"
   },
   "keywords": [],
   "author": "",
