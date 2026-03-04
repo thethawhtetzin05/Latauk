@@ -1,6 +1,8 @@
 {
   "name": "latauk-backend",
   "version": "1.0.0",
+  "description": "Latauk AI Agent Backend",
+  "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
