@@ -14,5 +14,3 @@ database_id = "4148d09c-497c-407d-91e7-17e05823c960"
 binding = "VECTOR_INDEX"
 index_name = "latauk-style-index"
 
-[build]
-command = "pnpm --filter backend install" # Instruct Cloudflare to build inside the backend folder
